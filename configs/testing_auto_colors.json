@@ -1,0 +1,277 @@
+{
+    "childrenToHide": [],
+    "subParts": {
+        "BeamCal": [
+            [
+                "(BeamCal_(?!envelope))\\w+|(BeamCal(?!_))\\w+"
+            ],
+            0.8,
+            [
+                1,
+                1,
+                1
+            ]
+        ],
+        "Coil": [
+            [
+                "(Coil_(?!envelope))\\w+|(Coil(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.28,
+                0.28,
+                0.86
+            ]
+        ],
+        "EcalBarrel": [
+            [
+                "(EcalBarrel_(?!envelope))\\w+|(EcalBarrel(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.48,
+                0.95,
+                0
+            ]
+        ],
+        "EcalEndcap": [
+            [
+                "(EcalEndcap_(?!envelope))\\w+|(EcalEndcap(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.48,
+                0.95,
+                0
+            ]
+        ],
+        "EcalPlug": [
+            [
+                "(EcalPlug_(?!envelope))\\w+|(EcalPlug(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.48,
+                0.95,
+                0
+            ]
+        ],
+        "FTD": [
+            [
+                "(FTD_(?!envelope))\\w+|(FTD(?!_))\\w+",
+                "FTDDisk_.*_negZ\\w+",
+                "ftd_petal_negZ_.*_.*\\w+",
+                "ftd_sensor_negZ_.*_.*_.*\\w+",
+                "FTDDisk_.*_posZ\\w+",
+                "ftd_petal_posZ_.*_.*\\w+",
+                "ftd_sensor_posZ_.*_.*_.*\\w+",
+                "FTD_support\\w+"
+            ],
+            0.8,
+            [
+                0.39,
+                0.1,
+                0.57
+            ]
+        ],
+        "HcalBarrel": [
+            [
+                "(HcalBarrel_(?!envelope))\\w+|(HcalBarrel(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.76,
+                0.76,
+                0.19
+            ]
+        ],
+        "HcalEndcap": [
+            [
+                "(HcalEndcap_(?!envelope))\\w+|(HcalEndcap(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.76,
+                0.76,
+                0.19
+            ]
+        ],
+        "HcalRing": [
+            [
+                "(HcalRing_(?!envelope))\\w+|(HcalRing(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.76,
+                0.76,
+                0.19
+            ]
+        ],
+        "LHCal": [
+            [
+                "(LHCal_(?!envelope))\\w+|(LHCal(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.5,
+                0.5,
+                0.5
+            ]
+        ],
+        "Lcal": [
+            [
+                "(Lcal_(?!envelope))\\w+|(Lcal(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.5,
+                0.5,
+                0.5
+            ]
+        ],
+        "QD0_cryostat": [
+            [
+                "(QD0_cryostat_(?!envelope))\\w+|(QD0_cryostat(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.5,
+                0.5,
+                0.5
+            ]
+        ],
+        "QD0_support": [
+            [
+                "(QD0_support_(?!envelope))\\w+|(QD0_support(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.5,
+                0.5,
+                0.5
+            ]
+        ],
+        "SET": [
+            [
+                "(SET_(?!envelope))\\w+|(SET(?!_))\\w+",
+                "set_ladder_.*_.*\\w+",
+                "set_ladder_.*_.*_.*\\w+"
+            ],
+            0.8,
+            [
+                0.86,
+                0.86,
+                0.86
+            ]
+        ],
+        "SIT": [
+            [
+                "(SIT_(?!envelope))\\w+|(SIT(?!_))\\w+",
+                "sit_ladder_.*_.*\\w+",
+                "sit_ladder_.*_.*_.*\\w+"
+            ],
+            0.8,
+            [
+                0.86,
+                0.86,
+                0.86
+            ]
+        ],
+        "SServices00": [
+            [
+                "(SServices00_(?!envelope))\\w+|(SServices00(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.5,
+                0.5,
+                0.5
+            ]
+        ],
+        "TPC": [
+            [
+                "(TPC_(?!envelope))\\w+|(TPC(?!_))\\w+",
+                "tpc_endcap_bwd\\w+",
+                "tpc_endcap_fwd\\w+",
+                "tpc_sensGas_bwd\\w+",
+                "tpc_row_bwd_.*\\w+",
+                "tpc_sensGas_fwd\\w+",
+                "tpc_row_fwd_.*\\w+"
+            ],
+            0.8,
+            [
+                0.96,
+                0.95,
+                0
+            ]
+        ],
+        "Tube": [
+            [
+                "(Tube_(?!envelope))\\w+|(Tube(?!_))\\w+"
+            ],
+            0.8,
+            [
+                1,
+                0.7,
+                0.5
+            ]
+        ],
+        "VXD": [
+            [
+                "(VXD_(?!envelope))\\w+|(VXD(?!_))\\w+",
+                "BerylliumAnnulusBlock_.*_negZ_.*\\w+",
+                "BerylliumAnnulusBlock_.*_posZ_.*\\w+",
+                "ElectronicsEnd_.*_negZ_.*\\w+",
+                "ElectronicsEnd_.*_posZ_.*\\w+",
+                "SiActiveLayer_.*_negZ_.*\\w+",
+                "SiActiveLayer_.*_posZ_.*\\w+",
+                "VXD_support\\w+",
+                "KaptonLines_.*_negZ\\w+",
+                "KaptonLines_.*_posZ\\w+",
+                "MetalLines_.*_negZ\\w+",
+                "MetalLines_.*_posZ\\w+",
+                "VXD_ExtKaptonCab_neg\\w+",
+                "VXD_ExtKaptonCab_pos\\w+",
+                "VXD_ExtMetalCab_neg\\w+",
+                "VXD_ExtMetalCab_pos\\w+",
+                "VXD_endplate_bwd\\w+",
+                "VXD_endplate_fwd\\w+",
+                "VXD_support_bwd_inner\\w+",
+                "VXD_support_bwd_outer\\w+",
+                "VXD_support_fwd_inner\\w+",
+                "VXD_support_fwd_outer\\w+",
+                "negShellCone\\w+",
+                "posShellCone\\w+"
+            ],
+            0.8,
+            [
+                0.1,
+                0.5,
+                0.5
+            ]
+        ],
+        "YokeBarrel": [
+            [
+                "(YokeBarrel_(?!envelope))\\w+|(YokeBarrel(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.09,
+                0.76,
+                0.76
+            ]
+        ],
+        "YokeEndcap": [
+            [
+                "(YokeEndcap_(?!envelope))\\w+|(YokeEndcap(?!_))\\w+"
+            ],
+            0.8,
+            [
+                0.09,
+                0.76,
+                0.76
+            ]
+        ]
+    },
+    "maxLevel": 3
+}

@@ -60,7 +60,7 @@ if (options.outputFile) {
 for (var [name, entry] of Object.entries(config.subParts)) {
   let temp = [];
   for (let path of entry[0]) {
-    temp.push(new RegExp(path));
+    temp.push(new RegExp(path, 'i'));
   }
   entry[0] = temp;
 }

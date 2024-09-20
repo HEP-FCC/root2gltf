@@ -1,0 +1,159 @@
+{
+    "childrenToHide": [
+        "SServices00",
+        "TPC"
+    ],
+    "subParts": {
+        "BeBeampipe": [
+            [
+                "(BeBeampipe_(?!envelope))\\w+|(BeBeampipe(?!_))\\w+"
+            ],
+            0.8, [0,1,0,1]
+        ],
+        "BeamPipe": [
+            [
+                "(BeamPipe_(?!envelope))\\w+|(BeamPipe(?!_))\\w+"
+            ],
+            0.8, [0,1,0,1]
+        ],
+        "BeamPipeShield": [
+            [
+                "(BeamPipeShield_(?!envelope))\\w+|(BeamPipeShield(?!_))\\w+"
+            ],
+            0.8, [0,1,0,1]
+        ],
+        "BeamPipeShield_noRot": [
+            [
+                "(BeamPipeShield_noRot_(?!envelope))\\w+|(BeamPipeShield_noRot(?!_))\\w+"
+            ],
+            0.8, [0,1,0,1]
+        ],
+        "Coil": [
+            [
+                "(Coil_(?!envelope))\\w+|(Coil(?!_))\\w+"
+            ],
+            0.3, [0.28,0.28,0.86,1]
+        ],
+        "CompSol": [
+            [
+                "(CompSol_(?!envelope))\\w+|(CompSol(?!_))\\w+"
+            ],
+            0.8, [0.5,0.5,0.5,1]
+        ],
+        "EcalBarrel": [
+            [
+                "(EcalBarrel_(?!envelope))\\w+|(EcalBarrel(?!_))\\w+"
+            ],
+            0.8, [0.48,0.95,0,1]
+        ],
+        "EcalEndcap": [
+            [
+                "(EcalEndcap_(?!envelope))\\w+|(EcalEndcap(?!_))\\w+"
+            ],
+            0.8, [0.48,0.95,0,1]
+        ],
+        "HcalBarrel": [
+            [
+                "(HcalBarrel_(?!envelope))\\w+|(HcalBarrel(?!_))\\w+"
+            ],
+            0.8, [0.76,0.76,0.19,1]
+        ],
+        "HcalEndcap": [
+            [
+                "(HcalEndcap_(?!envelope))\\w+|(HcalEndcap(?!_))\\w+"
+            ],
+            0.8, [0.76,0.76,0.19,1]
+        ],
+        "HcalRing": [
+            [
+                "(HcalRing_(?!envelope))\\w+|(HcalRing(?!_))\\w+"
+            ],
+            0.8, [0.76,0.76,0.19,1]
+        ],
+        "InnerTrackers": [
+            [
+                "(InnerTrackers_(?!envelope))\\w+|(InnerTrackers(?!_))\\w+",
+                "BeampipeShell.*\\w+",
+                "InnerTrackerBarrel\\w+",
+                "InnerTrackerBarrelSupport\\w+",
+                "InnerTrackerEndcap\\w+",
+                "InnerTrackerEndcapSupport\\w+",
+                "InnerTrackerInterlink\\w+",
+                "InnerTrackerVertexCable\\w+"
+            ],
+            0.8, [0.1,0.5,0.5,1]
+        ],
+        "LumiCal": [
+            [
+                "(LumiCal_(?!envelope))\\w+|(LumiCal(?!_))\\w+"
+            ],
+            0.8, [1,1,1,1]
+        ],
+        "LumiCalBackShield": [
+            [
+                "(LumiCalBackShield_(?!envelope))\\w+|(LumiCalBackShield(?!_))\\w+"
+            ],
+            0.8, [1,1,1,1]
+        ],
+        "LumiCalCooling": [
+            [
+                "(LumiCalCooling_(?!envelope))\\w+|(LumiCalCooling(?!_))\\w+"
+            ],
+            0.8, [1,1,1,1]
+        ],
+        "LumiCalInstrumentation": [
+            [
+                "(LumiCalInstrumentation_(?!envelope))\\w+|(LumiCalInstrumentation(?!_))\\w+"
+            ],
+            0.8, [1,1,1,1]
+        ],
+        "SET": [
+            [
+                "(SET_(?!envelope))\\w+|(SET(?!_))\\w+",
+                "set_ladder_.*_.*\\w+",
+                "set_ladder_.*_.*_.*\\w+"
+            ],
+            0.8, [1,0,1,1]
+        ],
+        "ScreenSol": [
+            [
+                "(ScreenSol_(?!envelope))\\w+|(ScreenSol(?!_))\\w+"
+            ],
+            0.8, [0.86,0.86,0.86,1]
+        ],
+        "SynchRadMask": [
+            [
+                "(SynchRadMask_(?!envelope))\\w+|(SynchRadMask(?!_))\\w+",
+                "tpc_endcap_bwd\\w+",
+                "tpc_endcap_fwd\\w+",
+                "tpc_sensGas_bwd\\w+",
+                "tpc_row_bwd_.*\\w+",
+                "tpc_sensGas_fwd\\w+",
+                "tpc_row_fwd_.*\\w+"
+            ],
+            0.8, [0.5,0.5,0.5,1]
+        ],
+        "Vertex": [
+            [
+                "(Vertex_(?!envelope))\\w+|(Vertex(?!_))\\w+",
+                "VertexBarrel\\w+",
+                "VertexEndcap\\w+",
+                "VertexVerticalCable\\w+"
+            ],
+            0.8, [0.1,0.5,0.5,1]
+        ],
+        "YokeBarrel": [
+            [
+                "(YokeBarrel_(?!envelope))\\w+|(YokeBarrel(?!_))\\w+"
+            ],
+            0.3, [0.09,0.76,0.76,1]
+        ],
+        "YokeEndcap": [
+            [
+                "(YokeEndcap_(?!envelope))\\w+|(YokeEndcap(?!_))\\w+"
+            ],
+            0.3
+        ]
+    },
+    "maxLevel": 3
+}

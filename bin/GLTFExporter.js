@@ -1278,10 +1278,9 @@ class GLTFWriter {
 			console.warn( 'GLTFExporter: Use MeshStandardMaterial or MeshBasicMaterial for best results.' );
 
 		}
-
 		// pbrMetallicRoughness.baseColorFactor
 		const color = material.color.toArray().concat( [ material.opacity ] );
-
+		
 		if ( ! equalArray( color, [ 1, 1, 1, 1 ] ) ) {
 
 			materialDef.pbrMetallicRoughness.baseColorFactor = color;
@@ -1664,12 +1663,13 @@ class GLTFWriter {
 		}
 
 		const isMultiMaterial = Array.isArray( mesh.material );
-
+		
 		if ( isMultiMaterial && geometry.groups.length === 0 ) return null;
 
 		const materials = isMultiMaterial ? mesh.material : [ mesh.material ];
-		const groups = isMultiMaterial ? geometry.groups : [ { materialIndex: 0, start: undefined, count: undefined } ];
 
+		const groups = isMultiMaterial ? geometry.groups : [ { materialIndex: 0, start: undefined, count: undefined } ];
+	
 		for ( let i = 0, il = groups.length; i < il; i ++ ) {
 
 			const primitive = {
@@ -1688,7 +1688,6 @@ class GLTFWriter {
 				if ( groups[ i ].start !== undefined || groups[ i ].count !== undefined ) {
 
 					cacheKey += ':' + groups[ i ].start + ':' + groups[ i ].count;
-
 				}
 
 				if ( cache.attributes.has( cacheKey ) ) {
@@ -1698,6 +1697,7 @@ class GLTFWriter {
 				} else {
 
 					primitive.indices = this.processAccessor( geometry.index, geometry, groups[ i ].start, groups[ i ].count );
+
 					cache.attributes.set( cacheKey, primitive.indices );
 
 				}
@@ -1707,7 +1707,7 @@ class GLTFWriter {
 			}
 
 			const material = this.processMaterial( materials[ groups[ i ].materialIndex ] );
-
+			
 			if ( material !== null ) primitive.material = material;
 
 			primitives.push( primitive );
@@ -2012,7 +2012,7 @@ class GLTFWriter {
 			for ( let i = 0, l = object.children.length; i < l; i ++ ) {
 
 				const child = object.children[ i ];
-
+			
 				if ( child.visible || options.onlyVisible === false ) {
 
 					const nodeIndex = this.processNode( child );
@@ -2066,11 +2066,11 @@ class GLTFWriter {
 		for ( let i = 0, l = scene.children.length; i < l; i ++ ) {
 
 			const child = scene.children[ i ];
-
+			
 			if ( child.visible || options.onlyVisible === false ) {
 
 				const nodeIndex = this.processNode( child );
-
+				
 				if ( nodeIndex !== null ) nodes.push( nodeIndex );
 
 			}
@@ -2078,7 +2078,7 @@ class GLTFWriter {
 		}
 
 		if ( nodes.length > 0 ) sceneDef.nodes = nodes;
-
+		
 		this.serializeUserData( scene, sceneDef );
 
 	}
