@@ -1,6 +1,7 @@
-#!/usr/bin/env node
-
 // Command line options
+import { readFileSync } from "node:fs";
+import { parse } from "node:path";
+
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
@@ -13,8 +14,6 @@ import { hideBin } from "yargs/helpers";
 import { convertGeometry } from "../lib/phoenixExport.js";
 
 // Node
-import * as fs from "fs";
-import * as path from "path";
 
 const options = yargs(hideBin(process.argv))
   .usage(
@@ -50,21 +49,21 @@ if (options.config) {
   configFilePath = options.config;
 }
 console.log("INFO: Using this configuration file:");
-console.log("      " + configFilePath);
-const config = JSON.parse(fs.readFileSync(configFilePath));
+console.log(`      ${configFilePath}`);
+const config = JSON.parse(readFileSync(configFilePath));
 
 const inFilePath = `${options._[0]}`;
 console.log("INFO: Reading file:");
-console.log("      " + inFilePath);
+console.log(`      ${inFilePath}`);
 
-let outFileName = path.parse(inFilePath).name + ".gltf";
+let outFileName = `${parse(inFilePath).name}.gltf`;
 if (options.outputFile) {
   outFileName = options.outputFile;
 }
 
-for (var [name, entry] of Object.entries(config.subParts)) {
-  let temp = [];
-  for (let path of entry[0]) {
+for (const [name, entry] of Object.entries(config.subParts)) {
+  const temp = [];
+  for (const path of entry[0]) {
     temp.push(new RegExp(path));
   }
   entry[0] = temp;
