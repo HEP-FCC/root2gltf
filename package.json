@@ -1,20 +1,40 @@
 {
   "name": "root2gltf",
-  "version": "0.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
+  "keywords": [
+    "ROOT",
+    "glTF",
+    "Detector",
+    "Phoenix"
+  ],
+  "homepage": "https://github.com/kjvbrt/root2gltf",
+  "bugs": {
+    "url": "https://github.com/kjvbrt/root2gltf/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kjvbrt/root2gltf.git"
+  },
+  "files": [
+    "bin"
+  ],
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
-  "author": "Juraj Smiesko",
+  "authors": [
+    "Juraj Smiesko",
+    "Pablo Apausa"
+  ],
   "license": "BSD-2-Clause",
-  "bin": {
-    "hello": "./bin/index.js"
-  },
   "dependencies": {
     "jsroot": "^7.1.0",
     "three": "^0.141.0",
     "yargs": "^17.5.1"
+  },
+  "devDependencies": {
+    "prettier": "3.8.3"
   }
 }
