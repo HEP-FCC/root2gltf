@@ -10,7 +10,7 @@ import {hideBin} from "yargs/helpers";
 // import { GLTFExporter } from './GLTFExporter.js';
 
 // GLTF exporter
-import { convertGeometry } from './phoenixExport.js';
+import { convertGeometry } from '../lib/phoenixExport.js';
 
 // Node
 import * as fs from "fs";
