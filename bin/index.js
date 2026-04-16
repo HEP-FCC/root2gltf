@@ -5,7 +5,7 @@ import { parse } from "node:path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { convertGeometry } from "../lib/phoenixExport.js";
+import { convertGeometry } from "../lib/phoenixExportNode.js";
 
 const options = yargs(hideBin(process.argv))
   .usage(
