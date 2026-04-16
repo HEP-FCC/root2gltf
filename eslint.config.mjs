@@ -66,4 +66,11 @@ export default defineConfig([
   ...nodeConfig,
   // Prettier config
   ...prettierConfig,
+  // Allow .js extensions on imports
+  {
+    name: "extensions/allow-js",
+    rules: {
+      "import-x/extensions": "warn",
+    },
+  },
 ]);

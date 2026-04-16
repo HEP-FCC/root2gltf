@@ -5,15 +5,7 @@ import { parse } from "node:path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-// Three
-// import {Blob} from 'node:buffer';
-// import * as THREE from 'three';
-// import { GLTFExporter } from './GLTFExporter.js';
-
-// GLTF exporter
 import { convertGeometry } from "../lib/phoenixExport.js";
-
-// Node
 
 const options = yargs(hideBin(process.argv))
   .usage(
