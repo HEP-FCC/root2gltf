@@ -57,6 +57,22 @@ const prettierConfig = defineConfig([
   },
 ]);
 
+const overridesConfig = defineConfig([
+  {
+    name: "overrides/warnings",
+    rules: {
+      "import-x/extensions": "off",
+    },
+  },
+  {
+    name: "overrides/disabled",
+    rules: {
+      "no-plusplus": "off",
+      "no-restricted-syntax": "off",
+    },
+  },
+]);
+
 export default defineConfig([
   // Ignore files and folders listed in .gitignore
   includeIgnoreFile(gitignorePath),
@@ -66,11 +82,6 @@ export default defineConfig([
   ...nodeConfig,
   // Prettier config
   ...prettierConfig,
-  // Allow .js extensions on imports
-  {
-    name: "extensions/allow-js",
-    rules: {
-      "import-x/extensions": "warn",
-    },
-  },
+  // Overrides
+  ...overridesConfig,
 ]);
