@@ -69,6 +69,8 @@ const overridesConfig = defineConfig([
     rules: {
       "no-plusplus": "off",
       "no-restricted-syntax": "off",
+      "no-param-reassign": "off",
+      radix: "off",
     },
   },
 ]);
