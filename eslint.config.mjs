@@ -71,6 +71,7 @@ const overridesConfig = defineConfig([
       "no-restricted-syntax": "off",
       "no-param-reassign": "off",
       radix: "off",
+      "no-underscore-dangle": "off",
     },
   },
 ]);
