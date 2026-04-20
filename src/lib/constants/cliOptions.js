@@ -2,8 +2,13 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 const OPTIONS = yargs(hideBin(process.argv))
-  .usage("Usage: $0 <input-file> [-o <output-file>] [-c <config-file>] [-h]")
-  .positional("input-file", { describe: "Input ROOT file", type: "string" })
+  .usage("Usage: $0 -i <input-file> -c <config-file> [-o <output-file>] [-h]")
+  .option("i", {
+    alias: "input-file",
+    describe: "Input ROOT file path",
+    type: "string",
+    demandOption: true,
+  })
   .option("o", {
     alias: "output-file",
     describe: "Output glTF file path",
@@ -13,6 +18,7 @@ const OPTIONS = yargs(hideBin(process.argv))
     alias: "config-file",
     describe: "Detector configuration file path",
     type: "string",
+    demandOption: true,
   })
   .help("h").argv;
 
