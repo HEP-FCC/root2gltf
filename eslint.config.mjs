@@ -59,6 +59,12 @@ const prettierConfig = defineConfig([
 
 const overridesConfig = defineConfig([
   {
+    name: "overrides/language",
+    languageOptions: {
+      ecmaVersion: "latest",
+    },
+  },
+  {
     name: "overrides/warnings",
     rules: {
       "import-x/extensions": "off",
@@ -69,9 +75,7 @@ const overridesConfig = defineConfig([
     rules: {
       "no-plusplus": "off",
       "no-restricted-syntax": "off",
-      "no-param-reassign": "off",
-      radix: "off",
-      "no-underscore-dangle": "off",
+      "no-bitwise": "off",
     },
   },
 ]);
