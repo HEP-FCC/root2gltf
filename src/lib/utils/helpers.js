@@ -13,25 +13,6 @@ export function matches(name, paths) {
   return false;
 }
 
-/// filters an array in place
-export function filterArrayInPlace(a, condition, thisArg) {
-  let j = 0;
-  a.forEach((e, i) => {
-    if (condition.call(thisArg, e, i, a)) {
-      if (i !== j) a[j] = e;
-      j++;
-    }
-  });
-  a.length = j;
-  return a;
-}
-
-export function forceDisplay() {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 0);
-  });
-}
-
 /**
  * Counts the number of objects in a hierarchy
  */
