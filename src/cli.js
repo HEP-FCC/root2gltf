@@ -1,5 +1,6 @@
+#!/usr/bin/env node
+import { root2gltf } from ".";
 import OPTIONS from "./lib/constants/cliOptions.js";
-import { root2gltf } from "./index.js";
 
 (async () => {
   try {

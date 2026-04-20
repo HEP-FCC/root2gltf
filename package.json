@@ -17,9 +17,9 @@
     "url": "git+https://github.com/kjvbrt/root2gltf.git"
   },
   "files": [
-    "bin"
+    "src"
   ],
-  "main": "bin/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --fix"
@@ -30,6 +30,9 @@
     "Pablo Apausa"
   ],
   "license": "BSD-2-Clause",
+  "bin": {
+    "root2gltf": "./src/cli.js"
+  },
   "dependencies": {
     "jsroot": "^7.10.3",
     "three": "^0.183.2",
