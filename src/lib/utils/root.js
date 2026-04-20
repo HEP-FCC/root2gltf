@@ -1,123 +1,99 @@
-import { filterArrayInPlace, matches } from "./helpers.js";
+import { matches } from "./helpers.js";
+import {
+  K_VIS_DAUGHTER,
+  K_VIS_THIS,
+  SPHERE_NSEG,
+  SPHERE_NZ,
+  TGEO_COMPOSITE_SHAPE,
+  TGEO_SPHERE,
+} from "../constants/root.js";
 
-/**
- * cleans up the geometry in node by dropping all subtress whose path starts
- * with one of the hiddenPaths and all nodes beyond a given level
- */
-export function cleanupGeometry(node, hiddenPaths, maxLevel, currLevel = 0) {
-  if (node.fVolume.fNodes) {
-    // drop hidden nodes, and everything after level maxLevel
-    filterArrayInPlace(
-      node.fVolume.fNodes.arr,
-      (n) => currLevel < maxLevel && !matches(n.fName, hiddenPaths),
-    );
-    // @fix if (node.fVolume.fNodes.arr.length > 0) {
-    for (const snode of node.fVolume.fNodes.arr) {
-      cleanupGeometry(snode, hiddenPaths, maxLevel, currLevel + 1);
-    }
+// Filter out all volume subparts within the hidden paths and beyond a maximum level
+export function removeTrees(node, hiddenPaths, maxLevel, level = 0) {
+  if (!node.fVolume.fNodes) return;
+
+  const nodes = node.fVolume.fNodes.arr;
+  let j = 0;
+
+  nodes.forEach((n, i) => {
+    if (level < maxLevel && !matches(n.fName, hiddenPaths))
+      nodes[j++] = nodes[i];
+  });
+
+  nodes.length = j;
+
+  nodes.forEach((snode) =>
+    removeTrees(snode, hiddenPaths, maxLevel, level + 1),
+  );
+}
+
+// Makes given node and all its children invisible
+export function hideTree(node) {
+  node.fVolume.fGeoAtt &= ~K_VIS_THIS;
+
+  node.fVolume.fNodes?.arr.forEach(hideTree);
+}
+
+// Avoid megabytes for near-flat shapes like Rich mirrors
+function reshapeSphere(shape) {
+  if (shape._typename === TGEO_SPHERE) {
+    // Reduce the number of faces in a sphere
+    shape.fNseg = SPHERE_NSEG;
+    shape.fNz = SPHERE_NZ;
+  } else if (shape._typename === TGEO_COMPOSITE_SHAPE) {
+    // Recurse shape
+    reshapeSphere(shape.fNode.fLeft);
+    reshapeSphere(shape.fNode.fRight);
   }
 }
 
-const kVisThis = 0x80;
-const kVisDaughter = 0x8;
+// Makes given node visible
+export function showNode(node) {
+  node.fVolume.fGeoAtt |= K_VIS_THIS;
 
-// goes recursively through shape and sets the number of segments for spheres
-function fixSphereShapes(shape) {
-  // in case of sphere, do the fix
-  if (shape._typename === "TGeoSphere") {
-    shape.fNseg = 3;
-    shape.fNz = 3;
-  }
-  // in case of composite shape, recurse
-  if (shape._typename === "TGeoCompositeShape") {
-    fixSphereShapes(shape.fNode.fLeft);
-    fixSphereShapes(shape.fNode.fRight);
-  }
+  reshapeSphere(node.fVolume.fShape);
 }
 
-// makes given node visible
-export function setVisible(node) {
-  // eslint-disable-next-line no-bitwise
-  node.fVolume.fGeoAtt |= kVisThis;
+// Makes given node and all its children visible
+function showTree(node) {
+  if (node.fVolume.fFillStyle !== 0) showNode(node);
 
-  // @fix moved from setVisibleRecursively
-  // Change the number of faces for sphere so that we avoid having
-  // megabytes for the Rich mirrors, which are actually almost flat
-  // Default was 20 and 11
-  fixSphereShapes(node.fVolume.fShape);
-}
-// makes given node's daughters visible
-function setVisibleDaughter(node) {
-  // eslint-disable-next-line no-bitwise
-  node.fVolume.fGeoAtt |= kVisDaughter;
-}
-// makes given node invisible
-function setInvisible(node) {
-  // eslint-disable-next-line no-bitwise
-  node.fVolume.fGeoAtt &= ~kVisThis;
-}
-// makes given node and all its children recursively visible
-function setVisibleRecursively(node) {
-  if (node.fVolume.fFillStyle !== 0) {
-    setVisible(node);
-  }
-  // Change the number of faces for sphere so that we avoid having
-  // megabytes for the Rich mirrors, which are actually almost flat
-  // Default was 20 and 11
-  if (node.fVolume.fNodes) {
-    for (const snode of node.fVolume.fNodes.arr) {
-      setVisibleRecursively(snode);
-    }
-  }
+  node.fVolume.fNodes?.arr.forEach(showTree);
 }
 
-// makes given node and all its children recursively invisible
-export function setInvisibleRecursively(node) {
-  setInvisible(node);
-  if (node.fVolume.fNodes) {
-    for (const snode of node.fVolume.fNodes.arr) {
-      setInvisibleRecursively(snode);
-    }
-  }
-}
+// Find and show all volume subparts within the target paths
+export function findTrees(node, paths) {
+  if (!node.fVolume.fNodes) return false;
 
-/**
- * make only the given paths visible in a geometry and returns
- * whether anything at all is visible
- */
-export function keepOnlySubpart(node, paths) {
-  if (!node.fNodes) return false;
-  const volume = node.fVolume;
-  if (!volume.fNodes) return false;
-  // mimic here the way root to gltf conversion works :
-  // Top node uses master volume name, other use node name
-  let anyfound = false;
+  let isFound = false;
 
-  for (const snode of volume.fNodes.arr) {
+  node.fVolume.fNodes.arr.forEach((snode) => {
     if (matches(snode.fName, paths)) {
-      // need to be resursive in case something deeper was hidden in previous round
-      setVisibleRecursively(snode);
-      anyfound = true;
-    } else {
-      // make daughers visible if a subpart is shown
-      const subpartfound = keepOnlySubpart(snode, paths);
-      if (subpartfound) {
-        setVisibleDaughter(snode);
-        anyfound = true;
-      }
+      // Make given node and all its children visible
+      showTree(snode);
+      // Mark found
+      isFound = true;
+    } else if (findTrees(snode, paths)) {
+      // If the node name did not match one of the target paths
+      // but one of its children's did, then set visibility flag
+      snode.fVolume.fGeoAtt |= K_VIS_DAUGHTER;
+      isFound = true;
     }
-  }
-  return anyfound;
+  });
+
+  return isFound;
 }
 
-/**
- * Removes children nodes that are not matching paths
- * these should never have been created, but jsRoot has limitations and may create
- * unwanted children in cases where the same logical volume is shared by several physical
- * volumes out of which some should be visible and others not.
- * Root is never checking the flags of the physical volumes, only of the logical one,
- * creating this situation
- */
+// @check
+//
+// /**
+//  * Removes children nodes that are not matching paths
+//  * these should never have been created, but jsRoot has limitations and may create
+//  * unwanted children in cases where the same logical volume is shared by several physical
+//  * volumes out of which some should be visible and others not.
+//  * Root is never checking the flags of the physical volumes, only of the logical one,
+//  * creating this situation
+//  */
 // export function cleanupChildren(child, paths) {
 //   // check all children and call ourselves recursively when we keep one
 //   filterArrayInPlace(
