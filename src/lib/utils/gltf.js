@@ -1,11 +1,7 @@
 // Refactored to node.js from https://github.com/HSF/root_cern-To_gltf-Exporter
 
-import { writeFile } from "node:fs/promises";
-
-import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
-
 /// deduplicates identical materials in the given gltf file
-function deduplicate(gltf) {
+export default function deduplicate(gltf) {
   // deduplicate materials
   console.log("INFO: Materials:");
   // scan them, build table of correspondance
@@ -71,20 +67,3 @@ function deduplicate(gltf) {
   );
   return JSON.parse(json);
 }
-
-/// convert given geometry to GLTF
-async function convertGeometry(obj3d, outputFileName) {
-  console.log("Exporting to GLTF");
-  const exporter = new GLTFExporter();
-  const gltf = await exporter.parseAsync(obj3d); // @todo or without async
-  console.log("Deduplicating data in GLTF");
-  const deduplicatedGltf = deduplicate(gltf);
-
-  // @todo async when writing file
-  writeFile(outputFileName, JSON.stringify(deduplicatedGltf), "utf8", (err) => {
-    if (err) console.log("ERROR: File can't be saved!");
-    else console.log(`INFO: Result saved to: '${outputFileName}`);
-  });
-}
-
-export default convertGeometry;
