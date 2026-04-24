@@ -1,0 +1,51 @@
+{
+  "childrenToHide": [],
+  "subParts": {
+    "Screen Solenoid": [["CompSol_assembly_0", "ScreenSol_assembly_1"], 0.6],
+    "Beam Pipe": [
+      [
+        "Beampipe_STL_2",
+        "Beampipe_crotch_STL_3",
+        "Gold_STL_4",
+        "Paraffin_STL_5",
+        "Water_STL_6",
+        "Tungsten_STL_7"
+      ],
+      0.6
+    ],
+    "QC1": [["QC1_assembly_8"], 0.6],
+    "LumiCal": [
+      [
+        "LumiCal_assembly_9",
+        "LumiCalInstrumentation_assembly_10",
+        "LumiCalCooling_assembly_11",
+        "LumiCalBackShield_assembly_12"
+      ],
+      0.6
+    ],
+    "Vertex": [["Vertex_13"], 0.6],
+    "Inner Trackers": [["InnerTrackers_14"], 0.6],
+    "TPC": [["TPC_envelope_15"], 0.6],
+    "SET": [["SET_envelope_16"], 0.6],
+    "ECal": [
+      [
+        "EcalBarrel_envelope_17",
+        "EcalEndcap_envelope_18",
+        "EcalPlug_envelope_19"
+      ],
+      0.6
+    ],
+    "HCal": [
+      [
+        "HcalBarrel_envelope_20",
+        "HcalEndcap_envelope_21",
+        "HcalRing_envelope_22"
+      ],
+      0.6
+    ],
+    "Yoke": [["YokeBarrel_envelope_23", "YokeEndcap_envelope_24"], 0.5],
+    "Coil": [["Coil_envelope_25"], 0.6],
+    "Services": [["SServices00assembly_26"], 0.6]
+  },
+  "maxLevel": 3
+}

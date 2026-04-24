@@ -1,0 +1,34 @@
+{
+  "childrenToHide": [],
+  "subParts": {
+    "Beam Pipe": [
+      [
+        "BeBeampipe_assembly_0",
+        "BeamPipe_assembly_1",
+        "SynchRadMask_assembly_2",
+        "BeamPipeShield_assembly_3",
+        "BeamPipeShield_noRot_assembly_4"
+      ],
+      0.8
+    ],
+    "Screen Solenoid": [["CompSol_assembly_5", "ScreenSol_assembly_6"], 0.8],
+    "LumiCal": [
+      [
+        "LumiCal_envelope_7",
+        "LumiCalInstrumentation_envelope_8",
+        "LumiCalCooling_envelope_9",
+        "LumiCalBackShield_envelope_10"
+      ],
+      0.8
+    ],
+    "Vertex": [["Vertex_11"], 0.7],
+    "STT": [["STT_o1_v01_envelope_12"], 0.7],
+    "Silicon Wrapper": [["SiWrB_envelope_13", "SiWrD_envelope_14"], 0.7],
+    "ECal": [["ECalBarrel_vol_15"], 0.6],
+    "HCal": [["HCalEnvelopeVolume_16"], 0.6],
+    "ECal Endcap": [["ECalEndcaps_turbine_17"], 0.6],
+    "HCal Endcap": [["HCalThreePartsEndcap_volume_18"], 0.6],
+    "Endcap": [["Barrel_assembly_19", "Endcaps_assembly_20"], 0.5]
+  },
+  "maxLevel": 3
+}
