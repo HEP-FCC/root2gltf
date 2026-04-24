@@ -93,48 +93,26 @@ export const findTrees = (node, paths) => {
   return isFound;
 };
 
-// @check
-//
-// /**
-//  * Removes children nodes that are not matching paths
-//  * these should never have been created, but jsRoot has limitations and may create
-//  * unwanted children in cases where the same logical volume is shared by several physical
-//  * volumes out of which some should be visible and others not.
-//  * Root is never checking the flags of the physical volumes, only of the logical one,
-//  * creating this situation
-//  */
-// export function cleanupChildren(child, paths) {
-//   // check all children and call ourselves recursively when we keep one
-//   filterArrayInPlace(
-//     child.children,
-//     (n) =>
-//       n.name === "" ||
-//       matches(`${n.name}_`, paths) ||
-//       cleanupChildren(n, paths),
-//   );
-//   return child.children.length > 0;
-// }
+// Counts the number of objects in a hierarchy
+export function countGLTFObjects(node) {
+  let n = node.children.length;
 
-// /**
-//  * Counts the number of objects in a hierarchy
-//  */
-// export function countGLTFObjects(node) {
-//   let n = node.children.length;
-//   for (const child of node.children) {
-//     n += countGLTFObjects(child);
-//   }
-//   return n;
-// }
+  for (const child of node.children) {
+    n += countGLTFObjects(child);
+  }
 
-// /**
-//  * Counts the number of objects in a hierarchy
-//  */
-// export function countRootObjects(volume) {
-//   let n = volume.fNodes.arr.length;
-//   for (const child of volume.fNodes.arr) {
-//     if (child.fVolume.fNodes) {
-//       n += countRootObjects(child.fVolume);
-//     }
-//   }
-//   return n;
-// }
+  return n;
+}
+
+// Counts the number of objects in a hierarchy
+export function countRootObjects(volume) {
+  let n = volume.fNodes.arr.length;
+
+  for (const child of volume.fNodes.arr) {
+    if (child.fVolume.fNodes) {
+      n += countRootObjects(child.fVolume);
+    }
+  }
+
+  return n;
+}
