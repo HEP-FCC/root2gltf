@@ -23,9 +23,8 @@ export const root2gltf = async (inputPath, configPath, optionalOutput) => {
   const config = await readFile(configPath);
   const { maxLevel, subParts, childrenToHide } = JSON.parse(config);
 
-  for (const entry of Object.values(subParts)) {
-    // @todo
-    entry[0] = entry[0].map((p) => new RegExp(p));
+  for (let value of Object.values(subParts)) {
+    value = value.map((p) => new RegExp(p));
   }
 
   // for each geometry subpart, duplicate the geometry and keep only the subpart
@@ -38,7 +37,7 @@ export const root2gltf = async (inputPath, configPath, optionalOutput) => {
   geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
   // Dump ROOT to GLtf, using one scene per subpart
-  const scenes = Object.entries(subParts).map(([name, entry]) => {
+  const scenes = Object.entries(subParts).map(([key, values]) => {
     const scene = new Scene();
 
     // Hide volume and all its subparts for the new scene
@@ -48,15 +47,12 @@ export const root2gltf = async (inputPath, configPath, optionalOutput) => {
     showNode(rawGeometry.fNodes.arr[0]);
 
     // Find and show all volume subparts within the target paths
-    findTrees(rawGeometry.fNodes.arr[0], entry[0]);
+    findTrees(rawGeometry.fNodes.arr[0], values);
 
-    scene.name = name;
+    scene.name = key;
     scene.children.push(build(rawGeometry, BUILD_OPTIONS));
-
-    scene.userData = // @refactor
-      typeof entry[1] === "boolean"
-        ? { visible: entry[1] }
-        : { visible: true, opacity: entry[1] };
+    scene.userData.visible = true;
+    scene.userData.opacity = 0.5;
 
     return scene;
   });
