@@ -40,7 +40,7 @@ export const removeTrees = (node, hiddenPaths, maxLevel, level = 0) => {
 export const hideTree = (node) => {
   node.fVolume.fGeoAtt &= ~K_VIS_THIS;
 
-  node.fVolume.fNodes?.arr.forEach(hideTree);
+  if (node.fVolume.fNodes) node.fVolume.fNodes.arr.forEach(hideTree);
 };
 
 // Avoid megabytes for near-flat shapes like Rich mirrors
@@ -67,7 +67,7 @@ export const showNode = (node) => {
 const showTree = (node) => {
   if (node.fVolume.fFillStyle !== 0) showNode(node);
 
-  node.fVolume.fNodes?.arr.forEach(showTree);
+  if (node.fVolume.fNodes) node.fVolume.fNodes.arr.forEach(showTree);
 };
 
 // Find and show all volume subparts within the target paths

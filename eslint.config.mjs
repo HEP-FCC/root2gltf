@@ -76,6 +76,8 @@ const overridesConfig = defineConfig([
       "no-plusplus": "off",
       "no-restricted-syntax": "off",
       "no-bitwise": "off",
+      "no-underscore-dangle": "off",
+      "no-param-reassign": "warn",
     },
   },
 ]);

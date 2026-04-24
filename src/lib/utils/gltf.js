@@ -63,6 +63,7 @@ export default function deduplicate(gltf) {
   let json = JSON.stringify(gltf);
   json = json.replace(
     /"mesh":([0-9]+)/g,
+    // eslint-disable-next-line radix
     (a, b) => `"mesh":${links[parseInt(b)]}`,
   );
   return JSON.parse(json);
