@@ -1,6 +1,6 @@
 {
   "name": "root2gltf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
   "keywords": [
     "ROOT",
@@ -21,6 +21,10 @@
     "src"
   ],
   "main": "src/index.js",
+  "exports": "./src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --fix"

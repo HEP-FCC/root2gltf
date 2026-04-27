@@ -68,6 +68,7 @@ const overridesConfig = defineConfig([
     name: "overrides/warnings",
     rules: {
       "import-x/extensions": "off",
+      "import-x/no-useless-path-segments": "off",
     },
   },
   {
