@@ -1,70 +1,72 @@
 // Refactored to node.js from https://github.com/HSF/root_cern-To_gltf-Exporter
 
-/// deduplicates identical materials in the given gltf file
-export default function deduplicate(gltf) {
-  // deduplicate materials
-  console.log("INFO: Materials:");
-  // scan them, build table of correspondance
-  let kept = [];
-  let links = {};
-  const { materials } = gltf;
+export const deduplicateMaterials = (outputContent) => {
+  // jsroot creates a new material per volume, so identical ones end up repeated many times.
+  console.log("INFO: Deduplicating materials:");
+
+  const { materials } = outputContent;
+  const deduplicated = new Map();
+  const mapping = {};
+
   console.log(`      Initial number of materials: ${materials.length}`);
-  for (let index = 0; index < materials.length; index++) {
-    let found = false;
-    for (let kindex = 0; kindex < kept.length; kindex++) {
-      if (JSON.stringify(kept[kindex]) === JSON.stringify(materials[index])) {
-        links[index] = kindex;
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      links[index] = kept.length;
-      kept.push(materials[index]);
-    }
+
+  // Iterate over all materials
+  for (let i = 0; i < materials.length; i++) {
+    const key = JSON.stringify(materials[i]);
+
+    // Assign a new index to each material occurrence
+    if (!deduplicated.has(key)) deduplicated.set(key, deduplicated.size);
+
+    // Map from old materials index to new one
+    mapping[i] = deduplicated.get(key);
   }
-  // now rewrite the materials table and fix the meshes
-  gltf.materials = kept;
-  for (const mesh of gltf.meshes) {
-    for (const primitive of mesh.primitives) {
-      if ("material" in primitive) {
-        primitive.material = links[primitive.material];
-      }
-    }
-  }
-  console.log(`      New number of materials: ${gltf.materials.length}`);
-  // deduplicate meshes
-  console.log("INFO: Meshes:");
-  console.log(
-    `      Initial number of meshes/accessors: ${gltf.meshes.length}/${gltf.accessors.length}`,
-  );
-  kept = [];
-  links = {};
-  for (let index = 0; index < gltf.meshes.length; index++) {
-    let found = false;
-    for (let kindex = 0; kindex < kept.length; kindex++) {
-      if (JSON.stringify(kept[kindex]) === JSON.stringify(gltf.meshes[index])) {
-        links[index] = kindex;
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      links[index] = kept.length;
-      kept.push(gltf.meshes[index]);
-    }
-  }
-  // now rewrite the meshes table and fix the nodes
-  gltf.meshes = kept;
-  console.log(
-    `      New number of meshes/accessors: ${gltf.meshes.length}/${gltf.accessors.length}`,
+
+  // Overwrite materials with the deduplicated set
+  outputContent.materials = [...deduplicated.keys()].map((k) => JSON.parse(k));
+
+  // Rewire the primitive references to point to the deduplicated set
+  outputContent.meshes.forEach((mesh) =>
+    mesh.primitives.forEach((primitive) => {
+      if ("material" in primitive)
+        primitive.material = mapping[primitive.material];
+    }),
   );
 
-  let json = JSON.stringify(gltf);
-  json = json.replace(
-    /"mesh":([0-9]+)/g,
-    // eslint-disable-next-line radix
-    (a, b) => `"mesh":${links[parseInt(b)]}`,
+  console.log(
+    `      New number of materials: ${outputContent.materials.length}`,
   );
-  return JSON.parse(json);
-}
+};
+
+export const deduplicateMeshes = (outputContent) => {
+  // jsroot creates a new shape per volume, so identical ones end up repeated many times.
+  console.log("INFO: Deduplicating meshes:");
+
+  const { meshes } = outputContent;
+  const deduplicated = new Map();
+  const mapping = {};
+
+  console.log(`      Initial number of meshes: ${meshes.length}`);
+
+  // Iterate ovver all meshes
+  for (let i = 0; i < meshes.length; i++) {
+    const key = JSON.stringify(meshes[i]);
+
+    // Assign a new index to each mesh occurrence
+    if (!deduplicated.has(key)) deduplicated.set(key, deduplicated.size);
+
+    // Map from old meshes index to new one
+    mapping[i] = deduplicated.get(key);
+  }
+
+  // Overwrite meshes with the deduplicated set
+  outputContent.meshes = [...deduplicated.keys()].map((k) => JSON.parse(k));
+
+  // Overwrite the node references to point to the deduplicated set
+  outputContent.nodes.forEach((node) => {
+    if ("mesh" in node) node.mesh = mapping[node.mesh];
+  });
+
+  console.log(
+    `      New number of meshes/accessors: ${outputContent.meshes.length}`,
+  );
+};
