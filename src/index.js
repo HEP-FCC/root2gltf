@@ -6,14 +6,14 @@ import { build } from "jsroot/geom";
 import { Scene } from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 
-import { BUILD_OPTIONS, GEO_GRAD_PER_SEGM } from "./lib/constants/root.js";
-import { deduplicateMaterials, deduplicateMeshes } from "./lib/utils/gltf.js";
+import { BUILD_OPTIONS, GEO_GRAD_PER_SEGM } from "./lib/constants.js";
 import {
   findTrees,
   hideTree,
   removeTrees,
   showNode,
-} from "./lib/utils/root.js";
+} from "./lib/handleInput.js";
+import { deduplicateMaterials, deduplicateMeshes } from "./lib/handleOutput.js";
 
 // eslint-disable-next-line import-x/prefer-default-export
 export const root2gltf = async (inputPath, configPath, optionalOutput) => {
