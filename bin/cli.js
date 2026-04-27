@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-/* eslint-disable import-x/no-useless-path-segments */
-import { root2gltf } from "./index.js";
-import OPTIONS from "./lib/constants/cliOptions.js";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import { root2gltf } from "../src/index.js";
 
 // Three.js GLTFExporter uses FileReader (browser API) to base64-encode binary
 // buffers. Polyfill it for Node.js using the native Blob.arrayBuffer().
@@ -20,6 +20,27 @@ globalThis.FileReader = class FileReader {
     });
   }
 };
+
+const OPTIONS = yargs(hideBin(process.argv))
+  .usage("Usage: $0 -i <input-file> -c <config-file> [-o <output-file>] [-h]")
+  .option("i", {
+    alias: "input-file",
+    describe: "Input ROOT file path",
+    type: "string",
+    demandOption: true,
+  })
+  .option("o", {
+    alias: "output-file",
+    describe: "Output glTF file path",
+    type: "string",
+  })
+  .option("c", {
+    alias: "config-file",
+    describe: "Detector configuration file path",
+    type: "string",
+    demandOption: true,
+  })
+  .help("h").argv;
 
 (async () => {
   try {

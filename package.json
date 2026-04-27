@@ -17,6 +17,7 @@
     "url": "git+https://github.com/kjvbrt/root2gltf.git"
   },
   "files": [
+    "bin",
     "src"
   ],
   "main": "src/index.js",
@@ -31,7 +32,7 @@
   ],
   "license": "BSD-2-Clause",
   "bin": {
-    "root2gltf": "./src/cli.js"
+    "root2gltf": "./bin/cli.js"
   },
   "dependencies": {
     "jsroot": "^7.10.3",
