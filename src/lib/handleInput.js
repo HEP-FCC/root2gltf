@@ -1,11 +1,11 @@
 import {
-  K_VIS_DAUGHTER,
   K_VIS_THIS,
+  K_VIS_DAUGHTER,
+  TGEO_SPHERE,
+  TGEO_COMPOSITE_SHAPE,
   SPHERE_NSEG,
   SPHERE_NZ,
-  TGEO_COMPOSITE_SHAPE,
-  TGEO_SPHERE,
-} from "../constants/root.js";
+} from "./constants.js";
 
 /// checks whether a name matches one of the given paths
 export const matches = (name, paths) => {
