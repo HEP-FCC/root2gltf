@@ -1,14 +1,11 @@
-// Refactored to node.js from https://github.com/HSF/root_cern-To_gltf-Exporter
+// Refactored to node.js and O(n) lookup from https://github.com/HSF/root_cern-To_gltf-Exporter
 
 export const deduplicateMaterials = (outputContent) => {
   // jsroot creates a new material per volume, so identical ones end up repeated many times.
-  console.log("INFO: Deduplicating materials:");
-
   const { materials } = outputContent;
+  const initial = materials.length;
   const deduplicated = new Map();
   const mapping = {};
-
-  console.log(`      Initial number of materials: ${materials.length}`);
 
   // Iterate over all materials
   for (let i = 0; i < materials.length; i++) {
@@ -33,19 +30,16 @@ export const deduplicateMaterials = (outputContent) => {
   );
 
   console.log(
-    `      New number of materials: ${outputContent.materials.length}`,
+    `INFO: Materials deduplicated: ${initial} -> ${outputContent.materials.length}`,
   );
 };
 
 export const deduplicateMeshes = (outputContent) => {
   // jsroot creates a new shape per volume, so identical ones end up repeated many times.
-  console.log("INFO: Deduplicating meshes:");
-
   const { meshes } = outputContent;
+  const initial = meshes.length;
   const deduplicated = new Map();
   const mapping = {};
-
-  console.log(`      Initial number of meshes: ${meshes.length}`);
 
   // Iterate ovver all meshes
   for (let i = 0; i < meshes.length; i++) {
@@ -67,6 +61,6 @@ export const deduplicateMeshes = (outputContent) => {
   });
 
   console.log(
-    `      New number of meshes/accessors: ${outputContent.meshes.length}`,
+    `INFO: Meshes deduplicated: ${initial} -> ${outputContent.meshes.length}`,
   );
 };
