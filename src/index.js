@@ -8,6 +8,8 @@ import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 
 import { BUILD_OPTIONS, GEO_GRAD_PER_SEGM } from "./lib/constants.js";
 import {
+  countGLTFObjects,
+  countRootObjects,
   findTrees,
   hideTree,
   removeTrees,
@@ -15,71 +17,72 @@ import {
 } from "./lib/handleInput.js";
 import { deduplicateMaterials, deduplicateMeshes } from "./lib/handleOutput.js";
 
-// eslint-disable-next-line import-x/prefer-default-export
-export const root2gltf = async (inputPath, configPath, optionalOutput) => {
+const root2gltf = async (inputPath, configPath, optionalOutput) => {
   console.log("INFO: Reading files");
   const input = await openFile(inputPath);
-  const rawGeometry = await input.readObject(input.fKeys[0].fName);
+  const rootGeometry = await input.readObject(input.fKeys[0].fName);
   const config = await readFile(configPath);
   const { maxLevel, subParts, childrenToHide } = JSON.parse(config);
+  const exporter = new GLTFExporter();
+  const outputPath = optionalOutput || `${parse(inputPath).name}.gltf`;
 
-  for (let value of Object.values(subParts)) {
-    value = value.map((p) => new RegExp(p));
-  }
+  console.log("INFO: Reading files");
+  // Filtering out all nodes within hidden paths and beyond a maximum level
+  removeTrees(rootGeometry.fNodes.arr[0], childrenToHide, maxLevel);
 
-  // for each geometry subpart, duplicate the geometry and keep only the subpart
-  console.log("INFO: Generating all scenes (one per subpart):");
-
-  // Filter out all nodes within hidden paths and beyond a maximum level
-  removeTrees(rawGeometry.fNodes.arr[0], childrenToHide, maxLevel);
+  console.log(
+    `      Root file has ${countRootObjects(rootGeometry)} objects (after cleanup)`,
+  );
 
   // Set number of degrees per face for circles
   geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-  // Dump ROOT to GLtf, using one scene per subpart
+  // Dump ROOT to GLtf, using one scene per volume subpart
   const scenes = Object.entries(subParts).map(([key, values]) => {
     const scene = new Scene();
 
     // Hide volume and all its subparts for the new scene
-    hideTree(rawGeometry.fNodes.arr[0]);
+    hideTree(rootGeometry.fNodes.arr[0]);
 
     // Show volume
-    showNode(rawGeometry.fNodes.arr[0]);
+    showNode(rootGeometry.fNodes.arr[0]);
 
     // Find and show all volume subparts within the target paths
-    findTrees(rawGeometry.fNodes.arr[0], values);
+    findTrees(rootGeometry.fNodes.arr[0], values);
 
     scene.name = key;
-    scene.children.push(build(rawGeometry, BUILD_OPTIONS));
+    const built = build(rootGeometry, BUILD_OPTIONS);
+    scene.children.push(built);
     scene.userData.visible = true;
     scene.userData.opacity = 0.5;
+
+    // Normalize pivot to null before exporting
+    scene.traverse((obj) => {
+      // Three.js GLTFExporter checks for `pivot !== null` (which is true for `undefined`),
+      // and jsroot's build() doesn't set it.
+      if (obj.pivot === undefined) obj.pivot = null;
+    });
+
+    console.log(`      ${key} -> ${countGLTFObjects(built)} objects`);
 
     return scene;
   });
 
-  const exporter = new GLTFExporter();
-  const outputPath = optionalOutput || `${parse(inputPath).name}.gltf`;
-
-  // Three.js GLTFExporter checks `pivot !== null` which is true for `undefined`,
-  // but jsroot's build() doesn't set pivot — normalize to null before exporting.
-  for (const scene of scenes) {
-    scene.traverse((obj) => {
-      // eslint-disable-next-line no-param-reassign
-      if (obj.pivot === undefined) obj.pivot = null;
-    });
-  }
-
   console.log("INFO: Exporting to GLTF");
-  exporter.parse(scenes, (gltf) => {
-    console.log("INFO: Deduplicating data in GLTF");
-    // Redduce the output file size by removing redundant data that jsroot generates
-    deduplicateMaterials(gltf);
-    deduplicateMeshes(gltf);
 
-    console.log("INFO: Writing file");
-    writeFile(outputPath, JSON.stringify(gltf), "utf8", (err) => {
-      if (err) console.log("ERROR: File can't be saved!");
-      else console.log(`INFO: Result saved to: '${outputPath}`);
-    });
+  const gltfGeometry = await new Promise((resolve, reject) => {
+    exporter.parse(scenes, resolve, reject);
   });
+
+  console.log("INFO: Deduplicating data in GLTF");
+  // Reduce the output file size by removing redundant data that jsroot generates
+  deduplicateMaterials(gltfGeometry);
+  deduplicateMeshes(gltfGeometry);
+
+  console.log("INFO: Writing file");
+  await writeFile(outputPath, JSON.stringify(gltfGeometry), "utf8");
+
+  console.log(`INFO: Result saved to: '${outputPath}'`);
 };
+
+export default root2gltf;
