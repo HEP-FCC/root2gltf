@@ -7,7 +7,7 @@ import { Scene } from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 
 import { BUILD_OPTIONS, GEO_GRAD_PER_SEGM } from "./lib/constants/root.js";
-import deduplicate from "./lib/utils/gltf.js";
+import { deduplicateMaterials, deduplicateMeshes } from "./lib/utils/gltf.js";
 import {
   findTrees,
   hideTree,
@@ -72,17 +72,14 @@ export const root2gltf = async (inputPath, configPath, optionalOutput) => {
   console.log("INFO: Exporting to GLTF");
   exporter.parse(scenes, (gltf) => {
     console.log("INFO: Deduplicating data in GLTF");
-    const deduplicatedGeometry = deduplicate(gltf);
+    // Redduce the output file size by removing redundant data that jsroot generates
+    deduplicateMaterials(gltf);
+    deduplicateMeshes(gltf);
 
     console.log("INFO: Writing file");
-    writeFile(
-      outputPath,
-      JSON.stringify(deduplicatedGeometry),
-      "utf8",
-      (err) => {
-        if (err) console.log("ERROR: File can't be saved!");
-        else console.log(`INFO: Result saved to: '${outputPath}`);
-      },
-    );
+    writeFile(outputPath, JSON.stringify(gltf), "utf8", (err) => {
+      if (err) console.log("ERROR: File can't be saved!");
+      else console.log(`INFO: Result saved to: '${outputPath}`);
+    });
   });
 };
