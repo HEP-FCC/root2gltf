@@ -1,11 +1,13 @@
 // Refactored to node.js and O(n) lookup from https://github.com/HSF/root_cern-To_gltf-Exporter
 
-export const deduplicateMaterials = (outputContent) => {
+import type { GltfContent } from "../types/gltf.js";
+
+export const deduplicateMaterials = (outputContent: GltfContent): void => {
   // jsroot creates a new material per volume, so identical ones end up repeated many times.
   const { materials } = outputContent;
   const initial = materials.length;
-  const deduplicated = new Map();
-  const mapping = {};
+  const deduplicated = new Map<string, number>();
+  const mapping: Record<number, number> = {};
 
   // Iterate over all materials
   for (let i = 0; i < materials.length; i++) {
@@ -15,7 +17,7 @@ export const deduplicateMaterials = (outputContent) => {
     if (!deduplicated.has(key)) deduplicated.set(key, deduplicated.size);
 
     // Map from old materials index to new one
-    mapping[i] = deduplicated.get(key);
+    mapping[i] = deduplicated.get(key)!;
   }
 
   // Overwrite materials with the deduplicated set
@@ -25,7 +27,7 @@ export const deduplicateMaterials = (outputContent) => {
   outputContent.meshes.forEach((mesh) =>
     mesh.primitives.forEach((primitive) => {
       if ("material" in primitive)
-        primitive.material = mapping[primitive.material];
+        primitive.material = mapping[primitive.material!];
     }),
   );
 
@@ -34,12 +36,12 @@ export const deduplicateMaterials = (outputContent) => {
   );
 };
 
-export const deduplicateMeshes = (outputContent) => {
+export const deduplicateMeshes = (outputContent: GltfContent): void => {
   // jsroot creates a new shape per volume, so identical ones end up repeated many times.
   const { meshes } = outputContent;
   const initial = meshes.length;
-  const deduplicated = new Map();
-  const mapping = {};
+  const deduplicated = new Map<string, number>();
+  const mapping: Record<number, number> = {};
 
   // Iterate ovver all meshes
   for (let i = 0; i < meshes.length; i++) {
@@ -49,7 +51,7 @@ export const deduplicateMeshes = (outputContent) => {
     if (!deduplicated.has(key)) deduplicated.set(key, deduplicated.size);
 
     // Map from old meshes index to new one
-    mapping[i] = deduplicated.get(key);
+    mapping[i] = deduplicated.get(key)!;
   }
 
   // Overwrite meshes with the deduplicated set
@@ -57,7 +59,7 @@ export const deduplicateMeshes = (outputContent) => {
 
   // Overwrite the node references to point to the deduplicated set
   outputContent.nodes.forEach((node) => {
-    if ("mesh" in node) node.mesh = mapping[node.mesh];
+    if ("mesh" in node) node.mesh = mapping[node.mesh!];
   });
 
   console.log(
