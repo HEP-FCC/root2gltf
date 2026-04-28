@@ -17,12 +17,22 @@ import {
 } from "./lib/handleInput.js";
 import { deduplicateMaterials, deduplicateMeshes } from "./lib/handleOutput.js";
 
-const root2gltf = async (inputPath, configPath, optionalOutput) => {
+interface Config {
+  maxLevel: number;
+  subParts: Record<string, string[]>;
+  childrenToHide: string[];
+}
+
+const root2gltf = async (
+  inputPath: string,
+  configPath: string,
+  optionalOutput?: string,
+): Promise<void> => {
   console.log("INFO: Reading files");
   const input = await openFile(inputPath);
   const rootGeometry = await input.readObject(input.fKeys[0].fName);
   const config = await readFile(configPath);
-  const { maxLevel, subParts, childrenToHide } = JSON.parse(config);
+  const { maxLevel, subParts, childrenToHide } = JSON.parse(config.toString());
   const exporter = new GLTFExporter();
   const outputPath = optionalOutput || `${parse(inputPath).name}.gltf`;
 
@@ -38,7 +48,7 @@ const root2gltf = async (inputPath, configPath, optionalOutput) => {
   geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
   // Dump ROOT to GLtf, using one scene per volume subpart
-  const scenes = Object.entries(subParts).map(([key, values]) => {
+  const scenes = Object.entries(subParts).map(([key, values]: any) => {
     const scene = new Scene();
 
     // Hide volume and all its subparts for the new scene

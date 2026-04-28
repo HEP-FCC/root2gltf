@@ -2,7 +2,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import root2gltf from "../src/index.js";
+import root2gltf from "../dist/index.js";
 
 // Three.js GLTFExporter uses FileReader (browser API) to base64-encode binary
 // buffers. Polyfill it for Node.js using the native Blob.arrayBuffer().
