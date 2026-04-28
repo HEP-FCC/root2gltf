@@ -18,14 +18,16 @@
   },
   "files": [
     "bin",
-    "src"
+    "dist"
   ],
-  "main": "src/index.js",
-  "exports": "./src/index.js",
+  "main": "dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --fix"
   },
@@ -46,10 +48,13 @@
   "devDependencies": {
     "@eslint/compat": "^2.0.5",
     "@eslint/js": "^9.39.4",
+    "@types/node": "^25.6.0",
+    "@types/three": "^0.184.0",
     "eslint": "^9.39.4",
     "eslint-config-airbnb-extended": "^3.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
   }
 }

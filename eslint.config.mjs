@@ -10,7 +10,7 @@ import path from "node:path";
 import { includeIgnoreFile } from "@eslint/compat";
 import js from "@eslint/js";
 import { defineConfig } from "eslint/config";
-import { configs, plugins, rules } from "eslint-config-airbnb-extended";
+import { configs, plugins } from "eslint-config-airbnb-extended";
 import { rules as prettierConfigRules } from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
 
@@ -28,8 +28,6 @@ const jsConfig = defineConfig([
   plugins.importX,
   // Airbnb base recommended config
   ...configs.base.recommended,
-  // Strict import rules
-  rules.base.importsStrict,
 ]);
 
 const nodeConfig = defineConfig([
@@ -37,6 +35,13 @@ const nodeConfig = defineConfig([
   plugins.node,
   // Airbnb Node recommended config
   ...configs.node.recommended,
+]);
+
+const typescriptConfig = defineConfig([
+  // TypeScript ESLint plugin
+  plugins.typescriptEslint,
+  // Airbnb base TypeScript config
+  ...configs.base.typescript,
 ]);
 
 const prettierConfig = defineConfig([
@@ -75,7 +80,6 @@ const overridesConfig = defineConfig([
     name: "overrides/disabled",
     rules: {
       "no-plusplus": "off",
-      "no-restricted-syntax": "off",
       "no-bitwise": "off",
       "no-underscore-dangle": "off",
       "no-param-reassign": "warn",
@@ -90,6 +94,8 @@ export default defineConfig([
   ...jsConfig,
   // Node config
   ...nodeConfig,
+  // TypeScript config
+  ...typescriptConfig,
   // Prettier config
   ...prettierConfig,
   // Overrides
