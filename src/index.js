@@ -28,7 +28,7 @@ const root2gltf = async (inputPath, configPath, optionalOutput) => {
 
   console.log("INFO: Reading files");
   // Filtering out all nodes within hidden paths and beyond a maximum level
-  removeTrees(rootGeometry.fNodes.arr[0], childrenToHide, maxLevel);
+  removeTrees(rootGeometry.fNodes.arr[0], new Set(childrenToHide), maxLevel);
 
   console.log(
     `      Root file has ${countRootObjects(rootGeometry)} objects (after cleanup)`,
@@ -48,7 +48,7 @@ const root2gltf = async (inputPath, configPath, optionalOutput) => {
     showNode(rootGeometry.fNodes.arr[0]);
 
     // Find and show all volume subparts within the target paths
-    findTrees(rootGeometry.fNodes.arr[0], values);
+    findTrees(rootGeometry.fNodes.arr[0], new Set(values));
 
     scene.name = key;
     const built = build(rootGeometry, BUILD_OPTIONS);

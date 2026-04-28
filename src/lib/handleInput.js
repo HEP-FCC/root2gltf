@@ -7,16 +7,6 @@ import {
   TGEO_SPHERE,
 } from "./constants.js";
 
-/// checks whether a name matches one of the given paths
-export const matches = (name, paths) => {
-  for (const path of paths) {
-    if (typeof path === "string" && name.startsWith(path)) return true;
-    if (name.match(path)) return true; // @todo needs to be a regexp
-  }
-
-  return false;
-};
-
 // Filter out all volume subparts within the hidden paths and beyond a maximum level
 export const removeTrees = (node, hiddenPaths, maxLevel, level = 0) => {
   if (!node.fVolume.fNodes) return;
@@ -25,8 +15,7 @@ export const removeTrees = (node, hiddenPaths, maxLevel, level = 0) => {
   let j = 0;
 
   nodes.forEach((n, i) => {
-    if (level < maxLevel && !matches(n.fName, hiddenPaths))
-      nodes[j++] = nodes[i];
+    if (level < maxLevel && !hiddenPaths.has(n.fName)) nodes[j++] = nodes[i];
   });
 
   nodes.length = j;
@@ -77,7 +66,7 @@ export const findTrees = (node, paths) => {
   let isFound = false;
 
   node.fVolume.fNodes.arr.forEach((snode) => {
-    if (matches(snode.fName, paths)) {
+    if (paths.has(snode.fName)) {
       // Make given node and all its children visible
       showTree(snode);
       // Mark found
