@@ -1,8 +1,6 @@
 // Refactored to node.js and O(n) lookup from https://github.com/HSF/root_cern-To_gltf-Exporter
 
-import type { GltfContent } from "../types/gltf.js";
-
-export const deduplicateMaterials = (outputContent: GltfContent): void => {
+export const deduplicateMaterials = (outputContent: any): void => {
   // jsroot creates a new material per volume, so identical ones end up repeated many times.
   const { materials } = outputContent;
   const initial = materials.length;
@@ -24,8 +22,8 @@ export const deduplicateMaterials = (outputContent: GltfContent): void => {
   outputContent.materials = [...deduplicated.keys()].map((k) => JSON.parse(k));
 
   // Rewire the primitive references to point to the deduplicated set
-  outputContent.meshes.forEach((mesh) =>
-    mesh.primitives.forEach((primitive) => {
+  outputContent.meshes.forEach((mesh: any) =>
+    mesh.primitives.forEach((primitive: any) => {
       if ("material" in primitive)
         primitive.material = mapping[primitive.material!];
     }),
@@ -36,7 +34,7 @@ export const deduplicateMaterials = (outputContent: GltfContent): void => {
   );
 };
 
-export const deduplicateMeshes = (outputContent: GltfContent): void => {
+export const deduplicateMeshes = (outputContent: any): void => {
   // jsroot creates a new shape per volume, so identical ones end up repeated many times.
   const { meshes } = outputContent;
   const initial = meshes.length;
