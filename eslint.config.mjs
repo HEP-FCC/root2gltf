@@ -1,10 +1,3 @@
-/**
- * THIS FILE WAS AUTO-GENERATED.
- * PLEASE DO NOT EDIT IT MANUALLY.
- * ===============================
- * IF YOU COPY THIS INTO AN ESLINT CONFIG, REMOVE THIS COMMENT BLOCK.
- */
-
 import path from "node:path";
 
 import { includeIgnoreFile } from "@eslint/compat";
@@ -13,6 +6,7 @@ import { defineConfig } from "eslint/config";
 import { configs, plugins } from "eslint-config-airbnb-extended";
 import { rules as prettierConfigRules } from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
+import globals from "globals";
 
 const gitignorePath = path.resolve(".", ".gitignore");
 
@@ -62,23 +56,27 @@ const prettierConfig = defineConfig([
   },
 ]);
 
+const jestConfig = defineConfig([
+  {
+    name: "jest/config",
+    files: ["**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
+]);
+
 const overridesConfig = defineConfig([
   {
-    name: "overrides/language",
+    name: "overrides",
     languageOptions: {
       ecmaVersion: "latest",
     },
-  },
-  {
-    name: "overrides/warnings",
     rules: {
       "import-x/extensions": "off",
       "import-x/no-useless-path-segments": "off",
-    },
-  },
-  {
-    name: "overrides/disabled",
-    rules: {
       "no-plusplus": "off",
       "no-bitwise": "off",
       "no-underscore-dangle": "off",
@@ -90,6 +88,8 @@ const overridesConfig = defineConfig([
 export default defineConfig([
   // Ignore files and folders listed in .gitignore
   includeIgnoreFile(gitignorePath),
+  // Ignore config files
+  { ignores: ["*.config.*"] },
   // JavaScript config
   ...jsConfig,
   // Node config
@@ -98,6 +98,8 @@ export default defineConfig([
   ...typescriptConfig,
   // Prettier config
   ...prettierConfig,
-  // Overrides
+  // Jest config
+  ...jestConfig,
+  // Overrides config
   ...overridesConfig,
 ]);
