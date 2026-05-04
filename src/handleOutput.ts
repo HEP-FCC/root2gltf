@@ -1,6 +1,6 @@
 // Refactored to node.js and O(n) lookup from https://github.com/HSF/root_cern-To_gltf-Exporter
 
-import type { TGLTFGeometry } from "./types/gltf.js";
+import type { TGLTFGeometry } from "./lib/types/gltf.js";
 
 export const deduplicateMaterials = (outputContent: TGLTFGeometry): void => {
   // jsroot creates a new material per volume, so identical ones end up repeated many times.

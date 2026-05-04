@@ -5,8 +5,12 @@ import {
   SPHERE_NZ,
   TGEO_COMPOSITE_SHAPE,
   TGEO_SPHERE,
-} from "./constants.js";
-import type { TGeoNodeMatrix, TGeoVolume, TGeoManager } from "./types/root.js";
+} from "./lib/constants.js";
+import type {
+  TGeoNodeMatrix,
+  TGeoVolume,
+  TGeoManager,
+} from "./lib/types/root.js";
 
 // Filter out all volume subparts within the hidden paths and beyond a maximum level
 export const removeTrees = (

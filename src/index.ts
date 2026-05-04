@@ -13,12 +13,12 @@ import {
   hideTree,
   removeTrees,
   showNode,
-} from "./lib/handleInput.js";
+} from "./handleInput.js";
 import {
   countGLTFObjects,
   deduplicateMaterials,
   deduplicateMeshes,
-} from "./lib/handleOutput.js";
+} from "./handleOutput.js";
 import type { TConfig } from "./lib/types/config.js";
 import type { TGeoManager } from "./lib/types/root.js";
 import type { TGLTFGeometry } from "./lib/types/gltf.js";
