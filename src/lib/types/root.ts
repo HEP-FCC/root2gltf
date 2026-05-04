@@ -4,7 +4,7 @@ interface RootBitOps {
   SetBit: (bit: number, value?: boolean) => void;
 }
 
-export type TGeoIdentity = RootBitOps & {
+type TGeoIdentity = RootBitOps & {
   _typename: "TGeoIdentity";
   fUniqueID: number;
   fBits: number;
@@ -12,7 +12,7 @@ export type TGeoIdentity = RootBitOps & {
   fTitle: string;
 };
 
-export type TGeoBBox = RootBitOps & {
+type TGeoBBox = RootBitOps & {
   _typename: "TGeoBBox";
   fUniqueID: number;
   fBits: number;
@@ -27,7 +27,7 @@ export type TGeoBBox = RootBitOps & {
   $nfaces: number;
 };
 
-export type TGeoMedium = RootBitOps & {
+type TGeoMedium = RootBitOps & {
   _typename: "TGeoMedium";
   fUniqueID: number;
   fBits: number;
@@ -38,7 +38,7 @@ export type TGeoMedium = RootBitOps & {
   fMaterial: object;
 };
 
-export type TGeoVoxelFinder = RootBitOps & {
+type TGeoVoxelFinder = RootBitOps & {
   _typename: "TGeoVoxelFinder";
   fUniqueID: number;
   fBits: number;
@@ -78,17 +78,6 @@ export type TGeoVoxelFinder = RootBitOps & {
   fIndcZ: Uint8Array;
 };
 
-export type TObjArray = RootBitOps & {
-  _typename: "TObjArray";
-  $kind: "TObjArray";
-  name: string;
-  fUniqueID: number;
-  fBits: number;
-  arr: TGeoNodeMatrix[];
-  fLast: number;
-  fLowerBound: number;
-};
-
 export type TGeoVolume = RootBitOps & {
   _typename: "TGeoVolume";
   fUniqueID: number;
@@ -101,7 +90,7 @@ export type TGeoVolume = RootBitOps & {
   fLineWidth: number;
   fFillColor: number;
   fFillStyle: number;
-  fNodes: TObjArray;
+  fNodes: TObjArray | null;
   fShape: TGeoBBox;
   fMedium: TGeoMedium;
   fFinder: null;
@@ -126,3 +115,18 @@ export type TGeoNodeMatrix = RootBitOps & {
   fOverlaps: never[];
   fMatrix: TGeoIdentity;
 };
+
+type TObjArray = RootBitOps & {
+  _typename: "TObjArray";
+  $kind: "TObjArray";
+  name: string;
+  fUniqueID: number;
+  fBits: number;
+  arr: TGeoNodeMatrix[];
+  fLast: number;
+  fLowerBound: number;
+};
+
+export interface TGeoManager {
+  fNodes: TObjArray;
+}
