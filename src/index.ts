@@ -8,91 +8,95 @@ import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 
 import { BUILD_OPTIONS, GEO_GRAD_PER_SEGM } from "./lib/constants.js";
 import {
-  countGLTFObjects,
   countRootObjects,
   findTrees,
   hideTree,
   removeTrees,
   showNode,
 } from "./lib/handleInput.js";
-import { deduplicateMaterials, deduplicateMeshes } from "./lib/handleOutput.js";
-
-interface Config {
-  maxLevel: number;
-  subParts: Record<string, string[]>;
-  childrenToHide: string[];
-}
+import {
+  countGLTFObjects,
+  deduplicateMaterials,
+  deduplicateMeshes,
+} from "./lib/handleOutput.js";
+import type { TConfig } from "./lib/types/config.js";
+import type { TGeoManager } from "./lib/types/root.js";
+import type { TGLTFGeometry } from "./lib/types/gltf.js";
 
 const root2gltf = async (
   inputPath: string,
   configPath: string,
   optionalOutput?: string,
 ): Promise<void> => {
-  console.log("INFO: Reading files");
+  console.log("INFO: Reading input file");
   const input = await openFile(inputPath);
-  const rootGeometry = await input.readObject(input.fKeys[0].fName);
+  const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
+  const rootNode = rootGeo.fNodes.arr[0]!;
+
+  console.log("INFO: Reading config file");
   const config = await readFile(configPath);
-  const { maxLevel, subParts, childrenToHide } = JSON.parse(config.toString());
-  const exporter = new GLTFExporter();
-  const outputPath = optionalOutput || `${parse(inputPath).name}.gltf`;
+  const settings: TConfig = JSON.parse(config.toString());
+  const { childrenToHide, maxLevel, subParts } = settings;
 
-  console.log("INFO: Reading files");
-  // Filtering out all nodes within hidden paths and beyond a maximum level
-  removeTrees(rootGeometry.fNodes.arr[0], new Set(childrenToHide), maxLevel);
+  console.log(`INFO: Input has ${countRootObjects(rootGeo)} objects`);
 
-  console.log(
-    `      Root file has ${countRootObjects(rootGeometry)} objects (after cleanup)`,
-  );
+  // Filter out all nodes within hidden paths and beyond a maximum level
+  removeTrees(rootNode, new Set(childrenToHide), maxLevel);
 
   // Set number of degrees per face for circles
   geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-  // Dump ROOT to GLtf, using one scene per volume subpart
-  const scenes = Object.entries(subParts).map(([key, values]: any) => {
-    const scene = new Scene();
+  const scenes = Object.entries(subParts).map(
+    ([key, values]: [string, string[]]) => {
+      // Use one scene per config subpart
+      const scene = new Scene();
 
-    // Hide volume and all its subparts for the new scene
-    hideTree(rootGeometry.fNodes.arr[0]);
+      // Hide volume and all its subparts for the new scene
+      hideTree(rootNode);
 
-    // Show volume
-    showNode(rootGeometry.fNodes.arr[0]);
+      // Show volume
+      showNode(rootNode);
 
-    // Find and show all volume subparts within the target paths
-    findTrees(rootGeometry.fNodes.arr[0], new Set(values));
+      // Find and show all volume subparts within the target paths
+      findTrees(rootNode, new Set(values));
 
-    scene.name = key;
-    const built = build(rootGeometry, BUILD_OPTIONS);
-    scene.children.push(built);
-    scene.userData.visible = true;
-    scene.userData.opacity = 0.5;
+      const built = build(rootGeo, BUILD_OPTIONS);
 
-    // Normalize pivot to null before exporting
-    scene.traverse((obj) => {
-      // Three.js GLTFExporter checks for `pivot !== null` (which is true for `undefined`),
-      // and jsroot's build() doesn't set it.
-      if (obj.pivot === undefined) obj.pivot = null;
-    });
+      // Define scene properties
+      scene.name = key;
+      scene.children.push(built);
+      scene.userData.visible = true;
+      scene.userData.opacity = 0.5;
 
-    console.log(`      ${key} -> ${countGLTFObjects(built)} objects`);
+      // Normalize pivot to null before exporting
+      scene.traverse((obj) => {
+        // Three.js GLTFExporter checks for `pivot !== null` (which is true for `undefined`),
+        // and jsroot's build() doesn't set it.
+        if (obj.pivot === undefined) obj.pivot = null;
+      });
 
-    return scene;
-  });
+      console.log(`INFO: ${key} has ${countGLTFObjects(built)} objects`);
 
-  console.log("INFO: Exporting to GLTF");
+      return scene;
+    },
+  );
 
-  const gltfGeometry = await new Promise((resolve, reject) => {
+  // Configure output file
+  const exporter = new GLTFExporter();
+  const outputPath = optionalOutput || `${parse(inputPath).name}.gltf`;
+  const gltfGeo = (await new Promise<unknown>((resolve, reject) => {
     exporter.parse(scenes, resolve, reject);
-  });
+  })) as TGLTFGeometry;
 
-  console.log("INFO: Deduplicating data in GLTF");
   // Reduce the output file size by removing redundant data that jsroot generates
-  deduplicateMaterials(gltfGeometry);
-  deduplicateMeshes(gltfGeometry);
+  console.log("INFO: Deduplicating GLTF data");
+  deduplicateMaterials(gltfGeo);
+  deduplicateMeshes(gltfGeo);
 
-  console.log("INFO: Writing file");
-  await writeFile(outputPath, JSON.stringify(gltfGeometry), "utf8");
+  console.log("INFO: Writing output file");
+  await writeFile(outputPath, JSON.stringify(gltfGeo), "utf8");
 
-  console.log(`INFO: Result saved to: '${outputPath}'`);
+  console.log(`INFO: Result saved to '${outputPath}'`);
 };
 
 export default root2gltf;
