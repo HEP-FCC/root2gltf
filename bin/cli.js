@@ -27,9 +27,12 @@ const OPTIONS = yargs(hideBin(process.argv))
 
 (async () => {
   try {
-    await root2gltf(OPTIONS.inputFile, OPTIONS.configFile, OPTIONS.outputFile);
+    await root2gltf({
+      inputPath: OPTIONS.inputFile,
+      configPath: OPTIONS.configFile,
+      outputPath: OPTIONS.outputFile,
+    });
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(`ERROR: ${error.message}`);
     // eslint-disable-next-line n/no-process-exit
     process.exit(1);

@@ -20,22 +20,18 @@ import {
   deduplicateMaterials,
   deduplicateMeshes,
 } from "./handleOutput.js";
-import type { TConfig } from "./lib/types/config.js";
+import type { TConfig, TParams } from "./lib/types/converter.js";
 import type { TGeoManager } from "./lib/types/root.js";
 import type { TGLTFGeometry } from "./lib/types/gltf.js";
 
-const root2gltf = async (
-  inputPath: string,
-  configPath: string,
-  optionalOutput?: string,
-): Promise<void> => {
+const root2gltf = async (params: TParams): Promise<void> => {
   console.log("INFO: Reading input file");
-  const input = await openFile(inputPath);
+  const input = await openFile(params.inputPath);
   const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
   const rootNode = rootGeo.fNodes.arr[0]!;
 
   console.log("INFO: Reading config file");
-  const config = await readFile(configPath);
+  const config = await readFile(params.configPath);
   const settings: TConfig = JSON.parse(config.toString());
   const { childrenToHide, maxLevel, subParts } = settings;
 
@@ -84,7 +80,8 @@ const root2gltf = async (
 
   // Configure output file
   const exporter = new GLTFExporter();
-  const outputPath = optionalOutput || `${parse(inputPath).name}.gltf`;
+  const outputPath =
+    params.outputPath || `${parse(params.inputPath).name}.gltf`;
   const gltfGeo = (await new Promise<unknown>((resolve, reject) => {
     exporter.parse(scenes, resolve, reject);
   })) as TGLTFGeometry;
