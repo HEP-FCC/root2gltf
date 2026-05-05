@@ -43,7 +43,11 @@ You can also call the converter in code:
 ```ts
 import root2gltf from "root2gltf";
 
-await root2gltf("CLD_o4_v05.root", "CLD_o4_v05.config.json", "CLD.gltf");
+await root2gltf({
+  inputPath: "CLD_o4_v05.root",
+  configPath: "CLD_o4_v05.config.json",
+  outputPath: "CLD.gltf",
+});
 ```
 
 ## Config

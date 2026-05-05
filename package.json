@@ -1,6 +1,6 @@
 {
   "name": "root2gltf",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
   "keywords": [
     "ROOT",
