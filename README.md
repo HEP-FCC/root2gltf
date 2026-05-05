@@ -4,6 +4,8 @@ Converts particle physics detector geometries from ROOT files to the glTF format
 
 It reads a ROOT geometry file, filters and splits it into named subparts according to a config file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix.
 
+This project is based on [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter), a browser-based ROOT to glTF converter developed by [Sebastien Ponce](https://github.com/sponce.).
+
 ## Usage
 
 ### Install
