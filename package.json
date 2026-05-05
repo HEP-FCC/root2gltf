@@ -8,13 +8,13 @@
     "Detector",
     "Phoenix"
   ],
-  "homepage": "https://github.com/kjvbrt/root2gltf",
+  "homepage": "https://github.com/HEP-FCC/root2gltf",
   "bugs": {
-    "url": "https://github.com/kjvbrt/root2gltf/issues"
+    "url": "https://github.com/HEP-FCC/root2gltf/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kjvbrt/root2gltf.git"
+    "url": "git+https://github.com/HEP-FCC/root2gltf.git"
   },
   "files": [
     "bin",
