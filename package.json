@@ -1,6 +1,6 @@
 {
-  "name": "root2gltf",
-  "version": "1.1.2",
+  "name": "@hep-fcc/root2gltf",
+  "version": "1.0.0",
   "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
   "keywords": [
     "ROOT",
@@ -16,29 +16,22 @@
     "type": "git",
     "url": "git+https://github.com/HEP-FCC/root2gltf.git"
   },
+  "license": "BSD-2-Clause",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "root2gltf": "bin/cli.js"
+  },
   "files": [
     "bin",
     "dist"
   ],
-  "main": "dist/index.js",
-  "exports": "./dist/index.js",
-  "types": "dist/index.d.ts",
-  "engines": {
-    "node": ">=20"
-  },
   "scripts": {
     "build": "tsc",
     "test": "jest",
     "lint": "npx eslint . --fix"
-  },
-  "type": "module",
-  "authors": [
-    "Juraj Smiesko",
-    "Pablo Apausa"
-  ],
-  "license": "BSD-2-Clause",
-  "bin": {
-    "root2gltf": "./bin/cli.js"
   },
   "dependencies": {
     "jsroot": "^7.10.3",
@@ -61,5 +54,12 @@
     "prettier": "^3.8.3",
     "ts-jest": "^29.4.9",
     "typescript": "^6.0.3"
-  }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "authors": [
+    "Juraj Smiesko",
+    "Pablo Apausa"
+  ]
 }
