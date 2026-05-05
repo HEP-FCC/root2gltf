@@ -1,4 +1,4 @@
-# root2gltf
+# root2gltf [![npm version](https://img.shields.io/npm/v/root2gltf.svg)](https://www.npmjs.com/package/root2gltf)
 
 Converts particle physics detector geometries from ROOT files to the glTF format used by [Phoenix](https://github.com/HSF/phoenix).
 
