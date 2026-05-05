@@ -3,3 +3,9 @@ export interface TConfig {
   subParts: Record<string, string[]>;
   maxLevel: number;
 }
+
+export interface TParams {
+  inputPath: string;
+  configPath: string;
+  outputPath: string;
+}
