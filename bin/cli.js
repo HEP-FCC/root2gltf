@@ -4,24 +4,6 @@ import { hideBin } from "yargs/helpers";
 
 import root2gltf from "../dist/index.js";
 
-// Three.js GLTFExporter uses FileReader (browser API) to base64-encode binary
-// buffers. Polyfill it for Node.js using the native Blob.arrayBuffer().
-globalThis.FileReader = class FileReader {
-  readAsDataURL(blob) {
-    blob.arrayBuffer().then((buffer) => {
-      this.result = `data:${blob.type || "application/octet-stream"};base64,${Buffer.from(buffer).toString("base64")}`;
-      if (this.onloadend) this.onloadend();
-    });
-  }
-
-  readAsArrayBuffer(blob) {
-    blob.arrayBuffer().then((buffer) => {
-      this.result = buffer;
-      if (this.onloadend) this.onloadend();
-    });
-  }
-};
-
 const OPTIONS = yargs(hideBin(process.argv))
   .usage("Usage: $0 -i <input-file> -c <config-file> [-o <output-file>] [-h]")
   .option("i", {

@@ -1,3 +1,4 @@
+import "./lib/polyfill.js";
 import { readFile, writeFile } from "node:fs/promises";
 import { parse } from "node:path";
 
