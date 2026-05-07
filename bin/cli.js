@@ -37,7 +37,7 @@ const OPTIONS = yargs(hideBin(process.argv))
     const input = await openFile(OPTIONS.inputFile);
 
     console.log("INFO: Reading config file");
-    const config = await readFile(OPTIONS.configFile);
+    const config = JSON.parse(await readFile(OPTIONS.configFile, "utf8"));
 
     console.log("INFO: Starting glTF conversion");
     const glTFOutput = await root2gltf({ input, config });
