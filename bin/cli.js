@@ -1,7 +1,11 @@
 #!/usr/bin/env node
+/* eslint-disable n/no-process-exit */
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
+import { readFile, writeFile } from "node:fs/promises";
+import { openFile } from "jsroot";
+import { parse } from "node:path";
 import root2gltf from "../dist/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
@@ -27,14 +31,24 @@ const OPTIONS = yargs(hideBin(process.argv))
 
 (async () => {
   try {
-    await root2gltf({
-      inputPath: OPTIONS.inputFile,
-      configPath: OPTIONS.configFile,
-      outputPath: OPTIONS.outputFile,
-    });
+    const path = OPTIONS.outputFile || `${parse(OPTIONS.inputFile).name}.gltf`;
+
+    console.log("INFO: Reading root file");
+    const input = await openFile(OPTIONS.inputFile);
+
+    console.log("INFO: Reading config file");
+    const config = await readFile(OPTIONS.configFile);
+
+    console.log("INFO: Starting glTF conversion");
+    const glTFOutput = await root2gltf({ input, config });
+
+    console.log("INFO: Writing output file");
+    await writeFile(path, JSON.stringify(glTFOutput), "utf8");
+
+    console.log(`INFO: glTF content saved to '${path}'`);
+    process.exit(0);
   } catch (error) {
     console.error(`ERROR: ${error.message}`);
-    // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
 })();
