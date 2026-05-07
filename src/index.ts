@@ -1,8 +1,6 @@
 import "./lib/polyfill.js";
-import { readFile, writeFile } from "node:fs/promises";
-import { parse } from "node:path";
 
-import { geoCfg, openFile } from "jsroot";
+import { geoCfg } from "jsroot";
 import { build } from "jsroot/geom";
 import { Scene } from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
@@ -20,20 +18,18 @@ import {
   deduplicateMaterials,
   deduplicateMeshes,
 } from "./handleOutput.js";
-import type { TConfig, TParams } from "./lib/types/converter.js";
+import type { TParams } from "./lib/types/converter.js";
 import type { TGeoManager } from "./lib/types/root.js";
 import type { TGLTFGeometry } from "./lib/types/gltf.js";
 
-const root2gltf = async (params: TParams): Promise<void> => {
-  console.log("INFO: Reading input file");
-  const input = await openFile(params.inputPath);
+const root2gltf = async ({
+  input,
+  config,
+}: TParams): Promise<TGLTFGeometry> => {
   const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
   const rootNode = rootGeo.fNodes.arr[0]!;
-
-  console.log("INFO: Reading config file");
-  const config = await readFile(params.configPath);
-  const settings: TConfig = JSON.parse(config.toString());
-  const { childrenToHide, maxLevel, subParts } = settings;
+  const { childrenToHide, maxLevel, subParts } = config;
+  const exporter = new GLTFExporter();
 
   console.log(`INFO: Input has ${countRootObjects(rootGeo)} objects`);
 
@@ -79,9 +75,6 @@ const root2gltf = async (params: TParams): Promise<void> => {
   );
 
   // Configure output file
-  const exporter = new GLTFExporter();
-  const outputPath =
-    params.outputPath || `${parse(params.inputPath).name}.gltf`;
   const gltfGeo = (await new Promise<unknown>((resolve, reject) => {
     exporter.parse(scenes, resolve, reject);
   })) as TGLTFGeometry;
@@ -91,10 +84,7 @@ const root2gltf = async (params: TParams): Promise<void> => {
   deduplicateMaterials(gltfGeo);
   deduplicateMeshes(gltfGeo);
 
-  console.log("INFO: Writing output file");
-  await writeFile(outputPath, JSON.stringify(gltfGeo), "utf8");
-
-  console.log(`INFO: Result saved to '${outputPath}'`);
+  return gltfGeo;
 };
 
 export default root2gltf;
