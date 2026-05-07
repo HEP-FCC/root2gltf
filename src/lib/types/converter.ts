@@ -5,7 +5,6 @@ export interface TConfig {
 }
 
 export interface TParams {
-  inputPath: string;
-  configPath: string;
-  outputPath: string;
+  input: any;
+  config: TConfig;
 }
