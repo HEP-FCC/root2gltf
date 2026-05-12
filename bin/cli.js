@@ -5,7 +5,7 @@ import { hideBin } from "yargs/helpers";
 
 import { readFile, writeFile } from "node:fs/promises";
 import { openFile } from "jsroot";
-import { parse } from "node:path";
+import { parse, resolve } from "node:path";
 import root2gltf from "../dist/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
@@ -34,7 +34,7 @@ const OPTIONS = yargs(hideBin(process.argv))
     const path = OPTIONS.outputFile || `${parse(OPTIONS.inputFile).name}.gltf`;
 
     console.log("INFO: Reading root file");
-    const input = await openFile(OPTIONS.inputFile);
+    const input = await openFile(resolve(OPTIONS.inputFile));
 
     console.log("INFO: Reading config file");
     const config = JSON.parse(await readFile(OPTIONS.configFile, "utf8"));
