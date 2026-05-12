@@ -40,16 +40,20 @@ node bin/cli.js -i CLD_o4_v05.root -c CLD_o4_v05.config.json -o CLD.gltf
 
 ### API
 
-You can also call the converter in code:
+You can also call the converter in code. But file I/O is your responsibility — pass an already-opened ROOT file and a config object:
 
 ```ts
+import { openFile } from "jsroot";
 import root2gltf from "root2gltf";
 
-await root2gltf({
-  inputPath: "CLD_o4_v05.root",
-  configPath: "CLD_o4_v05.config.json",
-  outputPath: "CLD.gltf",
-});
+const input = await openFile("CLD_o4_v05.root");
+const config = {
+  childrenToHide: [],
+  maxLevel: 3,
+  subParts: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
+};
+
+const gltfContent = await root2gltf({ input, config });
 ```
 
 ## Config
