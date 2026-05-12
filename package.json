@@ -1,20 +1,65 @@
 {
-  "name": "root2gltf",
-  "version": "0.0.1",
-  "description": "",
-  "main": "bin/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "@hep-fcc/root2gltf",
+  "version": "1.1.0",
+  "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
+  "keywords": [
+    "ROOT",
+    "glTF",
+    "Detector",
+    "Phoenix"
+  ],
+  "homepage": "https://github.com/HEP-FCC/root2gltf",
+  "bugs": {
+    "url": "https://github.com/HEP-FCC/root2gltf/issues"
   },
-  "type": "module",
-  "author": "Juraj Smiesko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HEP-FCC/root2gltf.git"
+  },
   "license": "BSD-2-Clause",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "hello": "./bin/index.js"
+    "root2gltf": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "npx eslint . --fix"
   },
   "dependencies": {
-    "jsroot": "^7.1.0",
-    "three": "^0.141.0",
-    "yargs": "^17.5.1"
-  }
+    "jsroot": "^7.10.3",
+    "three": "^0.183.2",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^2.0.5",
+    "@eslint/js": "^9.39.4",
+    "@jest/globals": "^29.7.0",
+    "@types/node": "^25.6.0",
+    "@types/three": "^0.184.0",
+    "eslint": "^9.39.4",
+    "eslint-config-airbnb-extended": "^3.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.6.0",
+    "jest": "^29.7.0",
+    "jest-util": "^29.7.0",
+    "prettier": "^3.8.3",
+    "ts-jest": "^29.4.9",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "authors": [
+    "Juraj Smiesko",
+    "Pablo Apausa"
+  ]
 }

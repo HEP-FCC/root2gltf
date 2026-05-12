@@ -1,33 +1,121 @@
-# root2gltf
+# root2gltf [![npm version](https://img.shields.io/npm/v/root2gltf.svg)](https://www.npmjs.com/package/@hep-fcc/root2gltf)
 
-This app converts detector objects from ROOT format to glTF used by
-[Phoenix](https://hepsoftwarefoundation.org/phoenix/).
-It is a quick hack needed to run conversion headless (e.g. in CI).
+Converts particle physics detector geometries from ROOT files to the glTF format used by [Phoenix](https://github.com/HSF/phoenix).
 
-Depends on JSROOT and Three.js.
+It reads a ROOT geometry file, filters and splits it into named subparts according to a config file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix.
 
-Uses also patched versions of the `GLTFExporter.js` from Three.js and `phoenixExport.js` from
-[root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter).
-
-
-## Installation
-
-After git clone run:
-```
-npm ci
-```
+This project is based on [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter), a browser-based ROOT to glTF converter developed by [Sebastien Ponce](https://github.com/sponce).
 
 ## Usage
 
-To run the app in the main directory:
-```
-node . detector.root
+### Install
+
+```bash
+npm install
 ```
 
-In order to convert the geometry one needs to write a configuration file.
-The examples of the configuration file are provided in `configs` directory.
-Three variables are expected in the configuration file:
-  * `subParts` names of the detector subparts to be given separate element in
-      the phoenix menu
-  * `childrenToHide` stems of names of the subparts to be removed
-  * `maxLevel` maximum depth of detail
+### Build
+
+```bash
+npm run build
+```
+
+### CLI
+
+```bash
+node bin/cli.js -i <input.root> -c <config.json> [-o <output.gltf>]
+```
+
+| Flag                  | Description                                                                    |
+| --------------------- | ------------------------------------------------------------------------------ |
+| `-i`, `--input-file`  | Required path to the input ROOT file                                           |
+| `-c`, `--config-file` | Required path to the detector config file                                      |
+| `-o`, `--output-file` | Optional path for the output glTF file (which defaults to `<input-name>.gltf`) |
+
+Example:
+
+```bash
+node bin/cli.js -i CLD_o4_v05.root -c CLD_o4_v05.config.json -o CLD.gltf
+```
+
+### API
+
+You can also call the converter in code. But file I/O is your responsibility — pass an already-opened ROOT file and a config object:
+
+```ts
+import { writeFile } from "node:fs/promises";
+import { openFile } from "jsroot";
+import root2gltf from "root2gltf";
+
+const input = await openFile("CLD_o4_v05.root");
+const config = {
+  childrenToHide: [],
+  maxLevel: 3,
+  subParts: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
+};
+const gltfContent = await root2gltf({ input, config });
+
+await writeFile("CLD.gltf", JSON.stringify(gltfContent), "utf8");
+```
+
+## Config
+
+Each detector needs a custom JSON config file. Here is what the fields do:
+
+| Field            | Description                                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------- |
+| `maxLevel`       | How many levels deep to traverse the geometry tree. Higher values produce more detail but larger files. |
+| `childrenToHide` | List of node names to remove before processing.                                                         |
+| `subParts`       | Maps a display name to a list of volume names. Each entry becomes a separate scene in the glTF file.    |
+
+Ready-to-use configs for several FCC-ee detector concepts are in [configs/](configs/).
+
+### Example: Allegro_o2_v01
+
+```json
+{
+  "childrenToHide": [],
+  "subParts": {
+    "Beam Pipe": [
+      "BeBeampipe_assembly_0",
+      "BeamPipe_assembly_1",
+      "SynchRadMask_assembly_2",
+      "BeamPipeShield_assembly_3",
+      "BeamPipeShield_noRot_assembly_4"
+    ],
+    "Screen Solenoid": ["CompSol_assembly_5", "ScreenSol_assembly_6"],
+    "LumiCal": [
+      "LumiCal_envelope_7",
+      "LumiCalInstrumentation_envelope_8",
+      "LumiCalCooling_envelope_9",
+      "LumiCalBackShield_envelope_10"
+    ],
+    "Vertex": ["Vertex_11"],
+    "STT": ["STT_o1_v01_envelope_12"],
+    "Silicon Wrapper": ["SiWrB_envelope_13", "SiWrD_envelope_14"],
+    "ECal": ["ECalBarrel_vol_15"],
+    "HCal": ["HCalEnvelopeVolume_16"],
+    "ECal Endcap": ["ECalEndcaps_turbine_17"],
+    "HCal Endcap": ["HCalThreePartsEndcap_volume_18"],
+    "Endcap": ["Barrel_assembly_19", "Endcaps_assembly_20"]
+  },
+  "maxLevel": 3
+}
+```
+
+## Project structure
+
+```
+root2gltf/
+├── bin/
+│   └── cli.js                # CLI entry point (argument parsing)
+├── src/
+│   ├── index.ts              # Main conversion logic
+│   ├── handleInput.ts        # ROOT tree traversal and filtering helpers
+│   ├── handleOutput.ts       # glTF deduplication (materials and meshes)
+│   └── lib/
+│       ├── constants.ts      # Build options and geometry settings
+│       ├── polyfill.ts       # FileReader polyfill for Node.js
+│       └── types/            # TypeScript type definitions
+└── dist/                     # Compiled JavaScript output (generated by tsc)
+```
