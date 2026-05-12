@@ -43,6 +43,7 @@ node bin/cli.js -i CLD_o4_v05.root -c CLD_o4_v05.config.json -o CLD.gltf
 You can also call the converter in code. But file I/O is your responsibility — pass an already-opened ROOT file and a config object:
 
 ```ts
+import { writeFile } from "node:fs/promises";
 import { openFile } from "jsroot";
 import root2gltf from "root2gltf";
 
@@ -52,8 +53,9 @@ const config = {
   maxLevel: 3,
   subParts: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
 };
-
 const gltfContent = await root2gltf({ input, config });
+
+await writeFile("CLD.gltf", JSON.stringify(gltfContent), "utf8");
 ```
 
 ## Config
