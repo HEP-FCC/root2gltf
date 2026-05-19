@@ -6,5 +6,5 @@ export interface TConfig {
 
 export interface TParams {
   input: any;
-  config: TConfig;
+  config: TConfig | null;
 }
