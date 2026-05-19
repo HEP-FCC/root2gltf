@@ -30,7 +30,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "npx eslint . --fix"
   },
   "dependencies": {
