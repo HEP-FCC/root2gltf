@@ -59,10 +59,15 @@ const prettierConfig = defineConfig([
 const jestConfig = defineConfig([
   {
     name: "jest/config",
-    files: ["**/*.test.ts"],
+    files: ["**/*.test.ts", "__tests__/mocks.ts"],
     languageOptions: {
       globals: {
         ...globals.jest,
+      },
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ["__tests__/*.ts"],
+        },
       },
     },
   },
