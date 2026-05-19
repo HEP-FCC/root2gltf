@@ -21,6 +21,7 @@ import {
 import type { TParams } from "./lib/types/converter.js";
 import type { TGeoManager } from "./lib/types/root.js";
 import type { TGLTFGeometry } from "./lib/types/gltf.js";
+import generateConfig from "./lib/generateConfig.js";
 
 const root2gltf = async ({
   input,
@@ -28,13 +29,13 @@ const root2gltf = async ({
 }: TParams): Promise<TGLTFGeometry> => {
   const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
   const rootNode = rootGeo.fNodes.arr[0]!;
-  const { childrenToHide, maxLevel, subParts } = config;
+  const { hiddenNodes, maxLevel, subParts } = generateConfig(config, rootNode);
   const exporter = new GLTFExporter();
 
   console.log(`INFO: Input has ${countRootObjects(rootGeo)} objects`);
 
   // Filter out all nodes within hidden paths and beyond a maximum level
-  removeTrees(rootNode, new Set(childrenToHide), maxLevel);
+  removeTrees(rootNode, new Set(hiddenNodes), maxLevel);
 
   // Set number of degrees per face for circles
   geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
