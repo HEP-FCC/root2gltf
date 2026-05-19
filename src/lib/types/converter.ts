@@ -1,5 +1,5 @@
 export interface TConfig {
-  childrenToHide: string[];
+  hiddenNodes: string[];
   subParts: Record<string, string[]>;
   maxLevel: number;
 }
