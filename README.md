@@ -2,7 +2,7 @@
 
 Converts particle physics detector geometries from ROOT files to the glTF format used by [Phoenix](https://github.com/HSF/phoenix).
 
-It reads a ROOT geometry file, filters and splits it into named subparts according to a config file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix.
+It reads a ROOT geometry file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix. An optional config file can be used to hide specific parts, group volumes into named views, or control traversal depth.
 
 This project is based on [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter), a browser-based ROOT to glTF converter developed by [Sebastien Ponce](https://github.com/sponce).
 
@@ -23,16 +23,16 @@ npm run build
 ### CLI
 
 ```bash
-node bin/cli.js -i <input.root> -c <config.json> [-o <output.gltf>]
+node bin/cli.js -i <input.root> [-c <config.json>] [-o <output.gltf>]
 ```
 
 | Flag                  | Description                                                                    |
 | --------------------- | ------------------------------------------------------------------------------ |
 | `-i`, `--input-file`  | Required path to the input ROOT file                                           |
-| `-c`, `--config-file` | Required path to the detector config file                                      |
+| `-c`, `--config-file` | Optional path to a detector config file                                        |
 | `-o`, `--output-file` | Optional path for the output glTF file (which defaults to `<input-name>.gltf`) |
 
-Example:
+Example with a config:
 
 ```bash
 node bin/cli.js -i CLD_o4_v05.root -c CLD_o4_v05.config.json -o CLD.gltf
@@ -40,7 +40,9 @@ node bin/cli.js -i CLD_o4_v05.root -c CLD_o4_v05.config.json -o CLD.gltf
 
 ### API
 
-You can also call the converter in code. But file I/O is your responsibility — pass an already-opened ROOT file and a config object:
+You can also call the converter in code. File I/O is your responsibility — pass an already-opened ROOT file and an optional config object:
+
+Example with a config:
 
 ```ts
 import { writeFile } from "node:fs/promises";
@@ -48,25 +50,34 @@ import { openFile } from "jsroot";
 import root2gltf from "root2gltf";
 
 const input = await openFile("CLD_o4_v05.root");
-const config = {
-  childrenToHide: [],
-  maxLevel: 3,
-  subParts: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
-};
-const gltfContent = await root2gltf({ input, config });
+
+const gltfContent = await root2gltf({
+  input,
+  config: {
+    childrenToHide: ["BeamPipeShield_assembly_0"],
+    depth: 4,
+    children: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
+  },
+});
 
 await writeFile("CLD.gltf", JSON.stringify(gltfContent), "utf8");
 ```
 
-## Config
+## Config file
 
-Each detector needs a custom JSON config file. Here is what the fields do:
+The config file is optional. Without it, the converter exports the full geometry at the default traversal depth (2). Use a config when you need to:
+
+- **Hide parts** — exclude specific volumes from the output
+- **Group volumes** — combine multiple volumes into a single named view
+- **Increase depth** — traverse deeper into the geometry tree for more detail
+
+Here is what the fields do:
 
 | Field            | Description                                                                                             |
 | ---------------- | ------------------------------------------------------------------------------------------------------- |
-| `maxLevel`       | How many levels deep to traverse the geometry tree. Higher values produce more detail but larger files. |
+| `depth`          | How many levels deep to traverse the geometry tree. Higher values produce more detail but larger files. |
 | `childrenToHide` | List of node names to remove before processing.                                                         |
-| `subParts`       | Maps a display name to a list of volume names. Each entry becomes a separate scene in the glTF file.    |
+| `children`       | Maps a display name to a list of volume names. Each entry becomes a separate scene in the glTF file.    |
 
 Ready-to-use configs for several FCC-ee detector concepts are in [configs/](configs/).
 
@@ -75,7 +86,7 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
 ```json
 {
   "childrenToHide": [],
-  "subParts": {
+  "children": {
     "Beam Pipe": [
       "BeBeampipe_assembly_0",
       "BeamPipe_assembly_1",
@@ -99,7 +110,7 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
     "HCal Endcap": ["HCalThreePartsEndcap_volume_18"],
     "Endcap": ["Barrel_assembly_19", "Endcaps_assembly_20"]
   },
-  "maxLevel": 3
+  "depth": 3
 }
 ```
 
