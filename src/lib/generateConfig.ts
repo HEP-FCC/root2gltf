@@ -6,7 +6,9 @@ const generateConfig = (config: TConfig, childrenNodes: TObjArray) =>
     ? config
     : {
         hidden: [],
-        subparts: childrenNodes.arr.forEach((node) => node.fName),
+        subparts: Object.fromEntries(
+          childrenNodes.arr.map((node) => [node.fName, [node.fName]]),
+        ),
         depth: 2,
       };
 
