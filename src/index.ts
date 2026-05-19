@@ -25,7 +25,7 @@ import generateConfig from "./lib/generateConfig.js";
 
 const root2gltf = async ({
   input,
-  config,
+  config = null,
 }: TParams): Promise<TGLTFGeometry> => {
   try {
     const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
