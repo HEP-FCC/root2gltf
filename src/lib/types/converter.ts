@@ -1,7 +1,7 @@
 export interface TConfig {
-  hiddenNodes: string[];
-  subParts: Record<string, string[]>;
-  maxLevel: number;
+  hidden: string[];
+  subparts: Record<string, string[]>;
+  depth: number;
 }
 
 export interface TParams {
