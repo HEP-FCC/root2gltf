@@ -31,7 +31,7 @@ export const deduplicateMaterials = (outputContent: TGLTFGeometry): void => {
   );
 
   console.log(
-    `INFO: Materials deduplicated: ${initial} -> ${outputContent.materials.length}`,
+    `INFO: - Materials deduplicated: ${initial} -> ${outputContent.materials.length}`,
   );
 };
 
@@ -62,7 +62,7 @@ export const deduplicateMeshes = (outputContent: TGLTFGeometry): void => {
   });
 
   console.log(
-    `INFO: Meshes deduplicated: ${initial} -> ${outputContent.meshes.length}`,
+    `INFO: - Meshes deduplicated: ${initial} -> ${outputContent.meshes.length}`,
   );
 };
 
