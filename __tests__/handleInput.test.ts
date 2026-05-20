@@ -15,6 +15,7 @@ describe("removeTrees", () => {
       it("then removes it from the parent", () => {
         const child = makeNode("Hidden");
         const root = makeNode("Root", [child]);
+
         removeTrees(root, new Set(["Hidden"]), 3);
         expect(root.fVolume.fNodes!.arr).toHaveLength(0);
       });
@@ -25,6 +26,7 @@ describe("removeTrees", () => {
         const grandchild = makeNode("GC");
         const child = makeNode("Child", [grandchild]);
         const root = makeNode("Root", [child]);
+
         removeTrees(root, new Set(), 1);
         expect(root.fVolume.fNodes!.arr[0]!.fVolume.fNodes!.arr).toHaveLength(
           0,
@@ -36,6 +38,7 @@ describe("removeTrees", () => {
       it("then keeps them all", () => {
         const child = makeNode("Keep");
         const root = makeNode("Root", [child]);
+
         removeTrees(root, new Set(), 3);
         expect(root.fVolume.fNodes!.arr).toHaveLength(1);
       });
@@ -46,6 +49,7 @@ describe("removeTrees", () => {
     describe("when removeTrees is called", () => {
       it("then does nothing", () => {
         const root = makeNode("Root");
+
         expect(() => removeTrees(root, new Set(), 3)).not.toThrow();
       });
     });
@@ -57,6 +61,7 @@ describe("hideTree", () => {
     describe("when hideTree is called", () => {
       it("then clears K_VIS_THIS on the node", () => {
         const node = makeNode("A", [], K_VIS_THIS);
+
         hideTree(node);
         expect(node.fVolume.fGeoAtt & K_VIS_THIS).toBe(0);
       });
@@ -64,6 +69,7 @@ describe("hideTree", () => {
       it("then clears K_VIS_THIS on all descendants", () => {
         const child = makeNode("B", [], K_VIS_THIS);
         const root = makeNode("Root", [child], K_VIS_THIS);
+
         hideTree(root);
         expect(root.fVolume.fGeoAtt & K_VIS_THIS).toBe(0);
         expect(child.fVolume.fGeoAtt & K_VIS_THIS).toBe(0);
@@ -77,6 +83,7 @@ describe("showNode", () => {
     describe("when showNode is called", () => {
       it("then sets K_VIS_THIS on the node", () => {
         const node = makeNode("A", [], 0);
+
         showNode(node);
         expect(node.fVolume.fGeoAtt & K_VIS_THIS).toBe(K_VIS_THIS);
       });
@@ -84,6 +91,7 @@ describe("showNode", () => {
       it("then does not affect children", () => {
         const child = makeNode("B", [], 0);
         const root = makeNode("Root", [child], 0);
+
         showNode(root);
         expect(child.fVolume.fGeoAtt & K_VIS_THIS).toBe(0);
       });
@@ -96,6 +104,7 @@ describe("findTrees", () => {
     describe("when called with a target set", () => {
       it("then returns false", () => {
         const root = makeNode("Root");
+
         expect(findTrees(root, new Set(["X"]))).toBe(false);
       });
     });
@@ -105,6 +114,7 @@ describe("findTrees", () => {
     describe("when called with those targets", () => {
       it("then returns false", () => {
         const root = makeNode("Root", [makeNode("A"), makeNode("B")]);
+
         expect(findTrees(root, new Set(["X"]))).toBe(false);
       });
     });
@@ -116,6 +126,7 @@ describe("findTrees", () => {
         const child = makeNode("Target", [], 0, 1);
         const root = makeNode("Root", [child]);
         const found = findTrees(root, new Set(["Target"]));
+
         expect(found).toBe(true);
         expect(child.fVolume.fGeoAtt & K_VIS_THIS).toBe(K_VIS_THIS);
       });
@@ -128,6 +139,7 @@ describe("findTrees", () => {
         const grandchild = makeNode("Target", [], 0, 1);
         const child = makeNode("Middle", [grandchild], 0);
         const root = makeNode("Root", [child]);
+
         findTrees(root, new Set(["Target"]));
         expect(child.fVolume.fGeoAtt & K_VIS_DAUGHTER).toBe(K_VIS_DAUGHTER);
       });
@@ -140,6 +152,7 @@ describe("countRootObjects", () => {
     describe("when countRootObjects is called", () => {
       it("then returns 0", () => {
         const node = makeNode("A");
+
         expect(countRootObjects(node.fVolume)).toBe(0);
       });
     });
@@ -149,6 +162,7 @@ describe("countRootObjects", () => {
     describe("when countRootObjects is called", () => {
       it("then counts them", () => {
         const root = makeNode("Root", [makeNode("A"), makeNode("B")]);
+
         expect(countRootObjects(root.fVolume)).toBe(2);
       });
     });
@@ -160,6 +174,7 @@ describe("countRootObjects", () => {
         const grandchild = makeNode("GC");
         const child = makeNode("Child", [grandchild]);
         const root = makeNode("Root", [child]);
+
         expect(countRootObjects(root.fVolume)).toBe(2);
       });
     });

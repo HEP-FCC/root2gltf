@@ -28,6 +28,7 @@ describe("deduplicateMaterials", () => {
           ],
           nodes: [],
         };
+
         deduplicateMaterials(geo);
         expect(geo.materials).toHaveLength(2);
       });
@@ -42,6 +43,7 @@ describe("deduplicateMaterials", () => {
           meshes: [],
           nodes: [],
         };
+
         deduplicateMaterials(geo);
         expect(geo.materials).toHaveLength(2);
       });
@@ -67,6 +69,7 @@ describe("deduplicateMaterials", () => {
           ],
           nodes: [],
         };
+
         deduplicateMaterials(geo);
         expect(geo.meshes[0]!.primitives[0]!.material).toBe(0);
         expect(geo.meshes[0]!.primitives[1]!.material).toBe(0);
@@ -84,6 +87,7 @@ describe("deduplicateMeshes", () => {
           meshes: [mesh(0), mesh(1)],
           nodes: [],
         };
+
         deduplicateMeshes(geo);
         expect(geo.meshes).toHaveLength(2);
       });
@@ -98,6 +102,7 @@ describe("deduplicateMeshes", () => {
           meshes: [mesh(0), mesh(1), mesh(0)],
           nodes: [],
         };
+
         deduplicateMeshes(geo);
         expect(geo.meshes).toHaveLength(2);
       });
@@ -108,6 +113,7 @@ describe("deduplicateMeshes", () => {
           meshes: [mesh(0), mesh(1), mesh(0)],
           nodes: [{ mesh: 0 }, { mesh: 2 }],
         };
+
         deduplicateMeshes(geo);
         expect((geo.nodes[0] as { mesh: number }).mesh).toBe(0);
         expect((geo.nodes[1] as { mesh: number }).mesh).toBe(0);
@@ -129,6 +135,7 @@ describe("countGLTFObjects", () => {
     describe("when countGLTFObjects is called", () => {
       it("then counts them", () => {
         const node = { children: [{ children: [] }, { children: [] }] };
+
         expect(countGLTFObjects(node)).toBe(2);
       });
     });
@@ -138,6 +145,7 @@ describe("countGLTFObjects", () => {
     describe("when countGLTFObjects is called", () => {
       it("then counts recursively", () => {
         const node = { children: [{ children: [{ children: [] }] }] };
+
         expect(countGLTFObjects(node)).toBe(2);
       });
     });
