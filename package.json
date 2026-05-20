@@ -30,8 +30,13 @@
   ],
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "npx eslint . --fix"
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
+    "prepublishOnly": "npm run lint && npm run test"
   },
   "dependencies": {
     "jsroot": "^7.10.3",
