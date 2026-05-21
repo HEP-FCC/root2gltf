@@ -1,7 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
-import generateConfig from "../src/lib/generateConfig.js";
-import type { TConfig } from "../src/lib/types/converter.js";
-import { makeChildren } from "./mocks.js";
+import generateConfig from "../../../src/lib/utils/generateConfig.js";
+import type { TConfig } from "../../../src/lib/types/converter.js";
+import { makeChildren } from "../../mocks.js";
 
 describe("generateConfig", () => {
   describe("given an explicit config is provided", () => {
