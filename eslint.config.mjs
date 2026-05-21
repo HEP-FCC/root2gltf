@@ -65,9 +65,8 @@ const jestConfig = defineConfig([
         ...globals.jest,
       },
       parserOptions: {
-        projectService: {
-          allowDefaultProject: ["__tests__/**/*.ts"],
-        },
+        projectService: false,
+        project: "./tsconfig.json",
       },
     },
   },

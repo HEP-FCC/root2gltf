@@ -6,7 +6,7 @@ import { hideBin } from "yargs/helpers";
 import { readFile, writeFile } from "node:fs/promises";
 import { openFile } from "jsroot";
 import { parse, resolve } from "node:path";
-import root2gltf from "../dist/index.js";
+import root2gltf from "../dist/src/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
   .usage("Usage: $0 -i <input-file> [-c <config-file>] [-o <output-file>] [-h]")
