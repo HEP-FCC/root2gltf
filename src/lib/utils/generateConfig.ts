@@ -1,5 +1,5 @@
-import type { TConfig } from "./types/converter.js";
-import type { TObjArray } from "./types/root.js";
+import type { TConfig } from "../types/converter.js";
+import type { TObjArray } from "../types/root.js";
 
 const generateConfig = (config: TConfig | null, childrenNodes: TObjArray) =>
   config !== null

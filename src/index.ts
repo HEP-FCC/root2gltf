@@ -1,4 +1,4 @@
-import "./lib/polyfill.js";
+import "./lib/utils/polyfill.js";
 
 import { geoCfg } from "jsroot";
 import { build } from "jsroot/geom";
@@ -21,7 +21,7 @@ import {
 import type { TParams } from "./lib/types/converter.js";
 import type { TGeoManager } from "./lib/types/root.js";
 import type { TGLTFGeometry } from "./lib/types/gltf.js";
-import generateConfig from "./lib/generateConfig.js";
+import generateConfig from "./lib/utils/generateConfig.js";
 
 const root2gltf = async ({
   input,
