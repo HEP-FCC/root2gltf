@@ -1,4 +1,4 @@
-import "./lib/polyfill.js";
+import "./lib/utils/polyfill.js";
 
 import { geoCfg } from "jsroot";
 import { build } from "jsroot/geom";
@@ -21,70 +21,79 @@ import {
 import type { TParams } from "./lib/types/converter.js";
 import type { TGeoManager } from "./lib/types/root.js";
 import type { TGLTFGeometry } from "./lib/types/gltf.js";
+import generateConfig from "./lib/utils/generateConfig.js";
 
 const root2gltf = async ({
   input,
-  config,
+  config = null,
 }: TParams): Promise<TGLTFGeometry> => {
-  const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
-  const rootNode = rootGeo.fNodes.arr[0]!;
-  const { childrenToHide, maxLevel, subParts } = config;
-  const exporter = new GLTFExporter();
+  try {
+    const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
+    if (!rootGeo) throw new Error("Failed to read detector geometry");
 
-  console.log(`INFO: Input has ${countRootObjects(rootGeo)} objects`);
+    const rootNode = rootGeo.fNodes.arr[0];
+    if (!rootNode) throw new Error("Geometry has no parent node");
 
-  // Filter out all nodes within hidden paths and beyond a maximum level
-  removeTrees(rootNode, new Set(childrenToHide), maxLevel);
+    const childrenNodes = rootNode.fVolume.fNodes;
+    if (!childrenNodes) throw new Error("Parent node has no subparts");
 
-  // Set number of degrees per face for circles
-  geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
+    const { hidden, depth, subparts } = generateConfig(config, childrenNodes);
+    const exporter = new GLTFExporter();
 
-  const scenes = Object.entries(subParts).map(
-    ([key, values]: [string, string[]]) => {
-      // Use one scene per config subpart
-      const scene = new Scene();
+    console.log(
+      `INFO: Parsing input file (${countRootObjects(rootGeo)} objects)`,
+    );
 
-      // Hide volume and all its subparts for the new scene
-      hideTree(rootNode);
+    // Filter out all nodes within hidden paths and beyond a maximum level
+    removeTrees(rootNode, new Set(hidden), depth);
 
-      // Show volume
-      showNode(rootNode);
+    // Set number of degrees per face for circles
+    geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-      // Find and show all volume subparts within the target paths
-      findTrees(rootNode, new Set(values));
+    const scenes = Object.entries(subparts).map(
+      ([key, values]: [string, string[]], index) => {
+        const scene = new Scene(); // Use one scene per config subpart
 
-      const built = build(rootGeo, BUILD_OPTIONS);
+        hideTree(rootNode); // Hide volume and all its subparts for the new scene
+        showNode(rootNode); // Show volume
+        findTrees(rootNode, new Set(values)); // Find and show all volume subparts within the target paths
 
-      // Define scene properties
-      scene.name = key;
-      scene.children.push(built);
-      scene.userData.visible = true;
-      scene.userData.opacity = 0.5;
+        scene.name = key;
+        scene.children.push(build(rootGeo, BUILD_OPTIONS)); // Build from reassigned parameters
+        scene.userData.visible = true;
+        scene.userData.opacity = 0.5; // 50% transparency
 
-      // Normalize pivot to null before exporting
-      scene.traverse((obj) => {
-        // Three.js GLTFExporter checks for `pivot !== null` (which is true for `undefined`),
-        // and jsroot's build() doesn't set it.
-        if (obj.pivot === undefined) obj.pivot = null;
-      });
+        // Normalize pivot to null before exporting
+        scene.traverse((obj) => {
+          // Three.js GLTFExporter checks for `pivot !== null` (which is true for `undefined`),
+          // and jsroot's build() doesn't set it.
+          if (obj.pivot === undefined) obj.pivot = null;
+        });
 
-      console.log(`INFO: ${key} has ${countGLTFObjects(built)} objects`);
+        console.log(
+          `INFO: ${index}: ${key} has ${countGLTFObjects(scene.children[scene.children.length - 1])} objects`,
+        );
 
-      return scene;
-    },
-  );
+        return scene;
+      },
+    );
 
-  // Configure output file
-  const gltfGeo = (await new Promise<unknown>((resolve, reject) => {
-    exporter.parse(scenes, resolve, reject);
-  })) as TGLTFGeometry;
+    // Configure output file
+    const gltfGeo = (await new Promise<unknown>((resolve, reject) => {
+      exporter.parse(scenes, resolve, reject);
+    })) as TGLTFGeometry;
 
-  // Reduce the output file size by removing redundant data that jsroot generates
-  console.log("INFO: Deduplicating GLTF data");
-  deduplicateMaterials(gltfGeo);
-  deduplicateMeshes(gltfGeo);
+    // Reduce the output file size by removing redundant data that jsroot generates
+    console.log("INFO: Optimizing output file");
+    deduplicateMaterials(gltfGeo);
+    deduplicateMeshes(gltfGeo);
 
-  return gltfGeo;
+    return gltfGeo;
+  } catch (error) {
+    throw new Error("Failed to convert ROOT file to glTF", {
+      cause: error,
+    });
+  }
 };
 
 export default root2gltf;

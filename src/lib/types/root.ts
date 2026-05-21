@@ -116,7 +116,7 @@ export type TGeoNodeMatrix = RootBitOps & {
   fMatrix: TGeoIdentity;
 };
 
-type TObjArray = RootBitOps & {
+export type TObjArray = RootBitOps & {
   _typename: "TObjArray";
   $kind: "TObjArray";
   name: string;

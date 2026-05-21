@@ -1,10 +1,10 @@
 export interface TConfig {
-  childrenToHide: string[];
-  subParts: Record<string, string[]>;
-  maxLevel: number;
+  hidden: string[];
+  subparts: Record<string, string[]>;
+  depth: number;
 }
 
 export interface TParams {
   input: any;
-  config: TConfig;
+  config?: TConfig | null;
 }

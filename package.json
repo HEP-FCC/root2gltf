@@ -1,6 +1,6 @@
 {
   "name": "@hep-fcc/root2gltf",
-  "version": "1.1.0",
+  "version": "1.2.2",
   "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
   "keywords": [
     "ROOT",
@@ -30,8 +30,13 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest",
-    "lint": "npx eslint . --fix"
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
+    "prepublishOnly": "npm run lint && npm run test"
   },
   "dependencies": {
     "jsroot": "^7.10.3",
