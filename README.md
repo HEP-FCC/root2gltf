@@ -65,11 +65,11 @@ await writeFile("CLD.gltf", JSON.stringify(gltfContent), "utf8");
 
 ## Config file
 
-The config file is optional. Without it, the converter exports the full geometry at the default traversal depth (2). Use a config when you need to:
+Config file/object is optional. Without it, the converter exports the full geometry at the default traversal depth 2. Use a config when you need to:
 
-- **Hide parts** — exclude specific volumes from the output
-- **Group volumes** — combine multiple volumes into a single named view
-- **Increase depth** — traverse deeper into the geometry tree for more detail
+- **Hide parts:** exclude specific volumes from the output
+- **Group volumes:** combine multiple volumes into a single named view
+- **Increase depth:** traverse deeper into the geometry tree for more detail
 
 Here is what the fields do:
 
