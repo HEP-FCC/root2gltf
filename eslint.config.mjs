@@ -66,7 +66,7 @@ const jestConfig = defineConfig([
       },
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["__tests__/*.ts"],
+          allowDefaultProject: ["__tests__/**/*.ts"],
         },
       },
     },
@@ -86,6 +86,7 @@ const overridesConfig = defineConfig([
       "no-bitwise": "off",
       "no-underscore-dangle": "off",
       "no-param-reassign": "warn",
+      "no-restricted-syntax": "off",
     },
   },
 ]);
