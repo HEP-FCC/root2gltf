@@ -34,7 +34,7 @@
     "typecheck": "tsc --noEmit",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "lint": "npx eslint .",
+    "lint": "npx eslint . --quiet",
     "lint:fix": "npx eslint . --fix",
     "prepublishOnly": "npm run lint && npm run test"
   },
