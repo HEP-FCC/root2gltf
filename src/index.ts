@@ -1,16 +1,9 @@
-import { installPolyfills, normalizePivot } from "./lib/utils/nodeWorkarounds.js";
-
 import { geoCfg } from "jsroot";
 import { build } from "jsroot/geom";
 import { Scene } from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 
-import {
-  findTrees,
-  hideTree,
-  removeTrees,
-  showNode,
-} from "./handleInput.js";
+import { findTrees, hideTree, removeTrees, showNode } from "./handleInput.js";
 import {
   countGLTFObjects,
   deduplicateMaterials,
@@ -28,6 +21,10 @@ import type { TGLTFGeometry } from "./lib/types/gltf.js";
 
 // Utils
 import generateConfig from "./lib/utils/generateConfig.js";
+import {
+  installPolyfills,
+  normalizePivot,
+} from "./lib/utils/nodeWorkarounds.js";
 
 // Polyfill FileReader for Node.js using the native Blob.arrayBuffer()
 installPolyfills();
@@ -68,7 +65,7 @@ const root2gltf = async ({
       findTrees(rootNode, new Set(values)); // Find and show all volume subparts within the target paths
       normalizePivot(rootScene); // Normalize pivot to null before exporting for Three.js GLTFExporter
 
-      rootScene.name = key; 
+      rootScene.name = key;
       rootScene.children.push(build(rootGeo, BUILD_OPTIONS)); // Build from reassigned parameters
       rootScene.userData.visible = true;
       rootScene.userData.opacity = 0.5; // 50% transparency

@@ -3,7 +3,7 @@ import {
   removeTrees,
   hideTree,
   showNode,
-  findTrees
+  findTrees,
 } from "../src/handleInput.js";
 import { K_VIS_THIS, K_VIS_DAUGHTER } from "../src/lib/constants.js";
 import { makeNode } from "./mocks.js";

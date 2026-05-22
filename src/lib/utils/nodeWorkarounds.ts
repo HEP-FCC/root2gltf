@@ -23,14 +23,15 @@ export function installPolyfills(): void {
     }
   }
 
-  (globalThis as unknown as { FileReader: unknown }).FileReader = NodeFileReader;
+  (globalThis as unknown as { FileReader: unknown }).FileReader =
+    NodeFileReader;
 }
 
 export function normalizePivot(scene: TTraversable): void {
   // Required because Three.js GLTFExporter checks for `pivot !== null` and
   // jsroot's build() doesn't set it (which is true for `undefined`)
-  scene.traverse((obj) => { 
+  scene.traverse((obj) => {
     const o = obj as Record<string, unknown>;
-    if (o["pivot"] === undefined) o["pivot"] = null;
+    if (o.pivot === undefined) o.pivot = null;
   });
 }

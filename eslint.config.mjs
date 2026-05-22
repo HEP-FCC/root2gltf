@@ -85,7 +85,7 @@ const overridesConfig = defineConfig([
       "no-bitwise": "off",
       "no-underscore-dangle": "off",
       "no-param-reassign": "warn",
-      "eslintno-await-in-loop": "warn",
+      "no-await-in-loop": "warn",
       "no-restricted-syntax": "off",
     },
   },
