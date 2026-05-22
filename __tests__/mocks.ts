@@ -51,6 +51,22 @@ export const mesh = (posAccessor: number): TGLTFGeometry["meshes"][0] => ({
   ],
 });
 
+export const ROOT_GEO = {
+  fNodes: {
+    arr: [makeNode("Root", [makeNode("PartA"), makeNode("PartB")])],
+  },
+};
+
+export const EMPTY_GLTF = {
+  scenes: [] as any[],
+  nodes: [] as any[],
+  meshes: [] as any[],
+  materials: [] as any[],
+  accessors: [] as any[],
+  bufferViews: [] as any[],
+  buffers: [] as any[],
+};
+
 export const silenceConsole = (): void => {
   beforeEach(() => {
     jest.spyOn(console, "log").mockImplementation(() => {});

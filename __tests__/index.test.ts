@@ -1,6 +1,6 @@
 import { describe, it, expect, jest } from "@jest/globals";
 
-import { makeNode, makeInput, silenceConsole } from "./mocks.js";
+import { makeNode, makeInput, silenceConsole, EMPTY_GLTF } from "./mocks.js";
 
 // Mock geoCfg from jsroot
 jest.unstable_mockModule("jsroot", () => ({
@@ -28,7 +28,7 @@ jest.unstable_mockModule(
   () => ({
     GLTFExporter: jest.fn().mockImplementation(() => ({
       parse: jest.fn((_scenes: unknown, resolve: (v: unknown) => void) =>
-        resolve({ nodes: [], meshes: [], materials: [] }),
+        resolve(EMPTY_GLTF),
       ),
     })),
   }),
@@ -84,7 +84,7 @@ describe("root2gltf", () => {
       it("then returns a TGLTFGeometry-shaped object", async () => {
         const result = await root2gltf({ input: makeInput(rootGeo) });
 
-        expect(result).toMatchObject({ nodes: [], meshes: [], materials: [] });
+        expect(result).toMatchObject(EMPTY_GLTF);
       });
 
       it("then creates one scene per top-level child", async () => {

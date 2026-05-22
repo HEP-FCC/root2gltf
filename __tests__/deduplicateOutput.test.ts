@@ -3,7 +3,7 @@ import {
   deduplicateMaterials,
   deduplicateMeshes,
   countGLTFObjects,
-} from "../src/handleOutput.js";
+} from "../src/deduplicateOutput.js";
 import type { TGLTFGeometry } from "../src/lib/types/gltf.js";
 import { mat, mesh, silenceConsole } from "./mocks.js";
 

@@ -6,22 +6,26 @@ export const deduplicateMaterials = (outputContent: TGLTFGeometry): void => {
   // jsroot creates a new material per volume, so identical ones end up repeated many times.
   const { materials } = outputContent;
   const initial = materials.length;
-  const deduplicated = new Map<string, number>();
+  const seen = new Map<string, number>();
   const mapping: Record<number, number> = {};
+  const deduplicated: any[] = [];
 
   // Iterate over all materials
   for (let i = 0; i < materials.length; i++) {
     const key = JSON.stringify(materials[i]);
 
     // Assign a new index to each material occurrence
-    if (!deduplicated.has(key)) deduplicated.set(key, deduplicated.size);
+    if (!seen.has(key)) {
+      seen.set(key, deduplicated.length);
+      deduplicated.push(materials[i]);
+    }
 
     // Map from old materials index to new one
-    mapping[i] = deduplicated.get(key)!;
+    mapping[i] = seen.get(key)!;
   }
 
   // Overwrite materials with the deduplicated set
-  outputContent.materials = [...deduplicated.keys()].map((k) => JSON.parse(k));
+  outputContent.materials = deduplicated;
 
   // Rewire the primitive references to point to the deduplicated set
   outputContent.meshes.forEach((mesh) =>
@@ -39,22 +43,26 @@ export const deduplicateMeshes = (outputContent: TGLTFGeometry): void => {
   // jsroot creates a new shape per volume, so identical ones end up repeated many times.
   const { meshes } = outputContent;
   const initial = meshes.length;
-  const deduplicated = new Map<string, number>();
+  const seen = new Map<string, number>();
   const mapping: Record<number, number> = {};
+  const deduplicated: any[] = [];
 
   // Iterate ovver all meshes
   for (let i = 0; i < meshes.length; i++) {
     const key = JSON.stringify(meshes[i]);
 
     // Assign a new index to each mesh occurrence
-    if (!deduplicated.has(key)) deduplicated.set(key, deduplicated.size);
+    if (!seen.has(key)) {
+      seen.set(key, seen.size);
+      deduplicated.push(meshes[i]);
+    }
 
     // Map from old meshes index to new one
-    mapping[i] = deduplicated.get(key)!;
+    mapping[i] = seen.get(key)!;
   }
 
   // Overwrite meshes with the deduplicated set
-  outputContent.meshes = [...deduplicated.keys()].map((k) => JSON.parse(k));
+  outputContent.meshes = deduplicated;
 
   // Overwrite the node references to point to the deduplicated set
   outputContent.nodes.forEach((node) => {
