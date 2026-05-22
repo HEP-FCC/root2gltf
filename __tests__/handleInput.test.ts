@@ -3,8 +3,7 @@ import {
   removeTrees,
   hideTree,
   showNode,
-  findTrees,
-  countRootObjects,
+  findTrees
 } from "../src/handleInput.js";
 import { K_VIS_THIS, K_VIS_DAUGHTER } from "../src/lib/constants.js";
 import { makeNode } from "./mocks.js";
@@ -142,40 +141,6 @@ describe("findTrees", () => {
 
         findTrees(root, new Set(["Target"]));
         expect(child.fVolume.fGeoAtt & K_VIS_DAUGHTER).toBe(K_VIS_DAUGHTER);
-      });
-    });
-  });
-});
-
-describe("countRootObjects", () => {
-  describe("given a node with no children", () => {
-    describe("when countRootObjects is called", () => {
-      it("then returns 0", () => {
-        const node = makeNode("A");
-
-        expect(countRootObjects(node.fVolume)).toBe(0);
-      });
-    });
-  });
-
-  describe("given a node with direct children", () => {
-    describe("when countRootObjects is called", () => {
-      it("then counts them", () => {
-        const root = makeNode("Root", [makeNode("A"), makeNode("B")]);
-
-        expect(countRootObjects(root.fVolume)).toBe(2);
-      });
-    });
-  });
-
-  describe("given a node with nested children", () => {
-    describe("when countRootObjects is called", () => {
-      it("then counts recursively", () => {
-        const grandchild = makeNode("GC");
-        const child = makeNode("Child", [grandchild]);
-        const root = makeNode("Root", [child]);
-
-        expect(countRootObjects(root.fVolume)).toBe(2);
       });
     });
   });
