@@ -63,12 +63,11 @@ const root2gltf = async ({
       hideTree(rootNode); // Hide volume and all its subparts for the new scene
       showNode(rootNode); // Show volume
       findTrees(rootNode, new Set(values)); // Find and show all volume subparts within the target paths
-      normalizePivot(rootScene); // Normalize pivot to null before exporting for Three.js GLTFExporter
-
       rootScene.name = key;
       rootScene.children.push(build(rootGeo, BUILD_OPTIONS)); // Build from reassigned parameters
       rootScene.userData.visible = true;
       rootScene.userData.opacity = 0.5; // 50% transparency
+      normalizePivot(rootScene); // Normalize pivot to null before exporting for Three.js GLTFExporter
 
       console.log(
         `INFO: ${key} has ${countGLTFObjects(rootScene.children[rootScene.children.length - 1])} objects`,
