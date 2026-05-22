@@ -92,16 +92,3 @@ export const findTrees = (
 
   return isFound;
 };
-
-// Counts the number of objects in a hierarchy
-export function countRootObjects(container: TGeoManager | TGeoVolume): number {
-  if (!container.fNodes) return 0;
-
-  let n = container.fNodes.arr.length;
-
-  container.fNodes.arr.forEach((child: TGeoNodeMatrix) => {
-    n += countRootObjects(child.fVolume);
-  });
-
-  return n;
-}
