@@ -50,7 +50,9 @@ const OPTIONS = yargs(hideBin(process.argv))
     console.log(`INFO: glTF content saved to '${path}'`);
     process.exit(0);
   } catch (error) {
-    console.error(`ERROR: ${error.message}`);
+    console.error(`
+      ERROR: ${error.message}
+      CAUSE: ${error.message}`);
     process.exit(1);
   }
 })();
