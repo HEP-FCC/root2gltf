@@ -15,6 +15,7 @@ const generateConfig = (
       childrenNodes.arr.map((node) => [node.fName, [node.fName]]),
     ),
     missingColors: true,
+    reduceOpacity: true,
   };
 };
 

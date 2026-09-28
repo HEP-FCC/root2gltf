@@ -54,27 +54,24 @@ const root2gltf = async ({
     const children = rootNode.fVolume.fNodes;
     if (!children) throw new Error("Parent node has no subparts");
 
-    const { hiddenVolumes, namedScenes, missingColors } = generateConfig(
-      config,
-      children,
-    );
+    const selectedConfig = generateConfig(config, children);
     const treeDepth = depth || DEFAULT_DEPTH;
     const exporter = new GLTFExporter();
-    const length = Object.keys(namedScenes).length - 1;
+    const length = Object.keys(selectedConfig.namedScenes).length - 1;
 
     let i = 0; // Current value to apply dynamic transparency
     let gltfGeo: TGLTFGeometry | null = null;
 
     // Filter out all nodes within hidden paths and beyond a maximum level
-    pruneTree(rootNode, new Set(hiddenVolumes), treeDepth);
+    pruneTree(rootNode, new Set(selectedConfig.hiddenVolumes), treeDepth);
 
     // Optionally assign a random color to volumes with an undefined, black or white value
-    if (missingColors) assignColors(rootNode);
+    if (selectedConfig.missingColors) assignColors(rootNode);
 
     // Set number of degrees per face for circles
     geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-    for (const [key, values] of Object.entries(namedScenes)) {
+    for (const [key, values] of Object.entries(selectedConfig.namedScenes)) {
       const rootScene = new Scene(); // Use one scene per config subpart
       const sceneOptions = {
         // vislevel: 4, // guardrail on the depth of the geometry hierarchy to traverse and render
@@ -96,8 +93,12 @@ const root2gltf = async ({
       rootScene.name = key;
       rootScene.children.push(build(rootGeo, sceneOptions)); // Build from reassigned parameters
       rootScene.userData.visible = true;
-      rootScene.userData.opacity =
-        ((length - i) * (MAX_OPACITY - MIN_OPACITY)) / length + MIN_OPACITY; // Dynamic transparency
+
+      // Optionally increase transparency for outer volumes
+      if (selectedConfig.reduceOpacity)
+        rootScene.userData.opacity =
+          ((length - i) * (MAX_OPACITY - MIN_OPACITY)) / length + MIN_OPACITY;
+
       normalizePivot(rootScene); // Normalize pivot to null before exporting for Three.js GLTFExporter
 
       console.log(
