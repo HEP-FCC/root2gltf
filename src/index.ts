@@ -13,6 +13,7 @@ import mergeGLTF from "./concatenateOutput.js";
 
 // Constants
 import {
+  DEFAULT_DEPTH,
   GEO_GRAD_PER_SEGM,
   MAX_OPACITY,
   MIN_OPACITY,
@@ -36,6 +37,7 @@ installPolyfills();
 
 const root2gltf = async ({
   input,
+  depth,
   config = null,
 }: TParams): Promise<TGLTFGeometry> => {
   try {
@@ -51,20 +53,24 @@ const root2gltf = async ({
     const childrenNodes = rootNode.fVolume.fNodes;
     if (!childrenNodes) throw new Error("Parent node has no subparts");
 
-    const { hidden, depth, subparts } = generateConfig(config, childrenNodes);
+    const { hiddenVolumes, namedScenes } = generateConfig(
+      config,
+      childrenNodes,
+    );
+    const treeDepth = depth || DEFAULT_DEPTH;
     const exporter = new GLTFExporter();
-    const length = Object.keys(subparts).length - 1;
+    const length = Object.keys(namedScenes).length - 1;
 
     let i = 0; // Current value to map
     let gltfGeo: TGLTFGeometry | null = null;
 
     // Filter out all nodes within hidden paths and beyond a maximum level
-    pruneTree(rootNode, new Set(hidden), depth);
+    pruneTree(rootNode, new Set(hiddenVolumes), treeDepth);
 
     // Set number of degrees per face for circles
     geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-    for (const [key, values] of Object.entries(subparts)) {
+    for (const [key, values] of Object.entries(namedScenes)) {
       const rootScene = new Scene(); // Use one scene per config subpart
       const sceneOptions = {
         // vislevel: 4, // guardrail on the depth of the geometry hierarchy to traverse and render

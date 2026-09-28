@@ -7,8 +7,8 @@ const generateConfig = (config: TConfig | null, childrenNodes: TObjArray) => {
   console.log(`INFO: Exporting the full geometry`);
 
   return {
-    hidden: [],
-    subparts: Object.fromEntries(
+    hiddenVolumes: [],
+    namedScenes: Object.fromEntries(
       childrenNodes.arr.map((node) => [node.fName, [node.fName]]),
     ),
   };

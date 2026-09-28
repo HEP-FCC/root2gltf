@@ -8,8 +8,8 @@ describe("generateConfig", () => {
     describe("when generateConfig is called", () => {
       it("then returns it unchanged", () => {
         const config: TConfig = {
-          hidden: ["A"],
-          subparts: { Group: ["B"] },
+          hiddenVolumes: ["A"],
+          namedScenes: { Group: ["B"] },
         };
         const result = generateConfig(config, makeChildren(["B"]));
 
@@ -23,14 +23,14 @@ describe("generateConfig", () => {
       it("then auto-generates config from children", () => {
         const result = generateConfig(null, makeChildren(["A", "B", "C"]));
 
-        expect(result.hidden).toEqual([]);
-        expect(result.subparts).toEqual({ A: ["A"], B: ["B"], C: ["C"] });
+        expect(result.hiddenVolumes).toEqual([]);
+        expect(result.namedScenes).toEqual({ A: ["A"], B: ["B"], C: ["C"] });
       });
 
       it("then produces one subpart entry per child node", () => {
         const result = generateConfig(null, makeChildren(["X", "Y"]));
 
-        expect(Object.keys(result.subparts)).toHaveLength(2);
+        expect(Object.keys(result.namedScenes)).toHaveLength(2);
       });
     });
   });

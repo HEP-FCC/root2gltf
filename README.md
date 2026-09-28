@@ -82,8 +82,8 @@ const gltfContent = await root2gltf({
   input,
   depth: 3,
   config: {
-    hidden: ["BeamPipeShield_assembly_0"],
-    subparts: { "Beam Pipe": ["BeBeampipe_assembly_0"] }, // what happens for the parts not referenced??
+    hiddenVolumes: ["BeamPipeShield_assembly_0"],
+    namedScenes: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
   },
 });
 
@@ -95,14 +95,14 @@ await writeFile("CLD.gltf", JSON.stringify(gltfContent), "utf8");
 Config file/object is optional. Use it when you need to:
 
 - **Hide parts:** exclude specific volumes from the output
-- **Group volumes:** combine multiple volumes into a single named view
+- **Group volumes:** combine multiple volumes into a view
 
 Here is what the fields do:
 
-| Field            | Description                                                                                          |
-| ---------------- | ---------------------------------------------------------------------------------------------------- |
-| `childrenToHide` | List of node names to remove before processing.                                                      |
-| `children`       | Maps a display name to a list of volume names. Each entry becomes a separate scene in the glTF file. |
+| Field           | Description                                                                                   |
+| --------------- | --------------------------------------------------------------------------------------------- |
+| `hiddenVolumes` | List of nodes to remove from the file (otherwise none are deleted)                            |
+| `namedScenes`   | List of nodes to group in a single scene (otherwise each volume is mapped to a separate view) |
 
 Ready-to-use configs for several FCC-ee detector concepts are in [configs/](configs/).
 
@@ -110,8 +110,8 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
 
 ```json
 {
-  "childrenToHide": [],
-  "children": {
+  "hiddenVolumes": [],
+  "namedScenes": {
     "Beam Pipe": [
       "BeBeampipe_assembly_0",
       "BeamPipe_assembly_1",

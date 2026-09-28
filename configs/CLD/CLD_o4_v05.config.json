@@ -1,5 +1,5 @@
 {
-  "childrenToHide": [],
+  "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
       "BeBeampipe_assembly_0",
@@ -22,6 +22,5 @@
     "HCal": ["HCalBarrel_envelope_16", "HCalEndcaps_17"],
     "Solenoid": ["Solenoid_18"],
     "Yoke": ["YokeBarrel_envelope_19", "YokeEndcap_envelope_20"]
-  },
-  "maxLevel": 3
+  }
 }

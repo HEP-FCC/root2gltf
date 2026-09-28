@@ -1,6 +1,6 @@
 export interface TConfig {
-  hidden: string[];
-  subparts: Record<string, string[]>;
+  hiddenVolumes: string[];
+  namedScenes: Record<string, string[]>;
 }
 
 export interface TParams {
