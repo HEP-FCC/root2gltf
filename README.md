@@ -41,6 +41,29 @@ Example with custom depth:
 node bin/cli.js -i CLD_o4_v05.root -d 4 -o CLD_o4_v05.gltf
 ```
 
+Example without custom depth
+
+```bash
+# CLD
+node bin/cli.js -i CLD_o2_v08.root -o CLD_o2_v08.gltf
+node bin/cli.js -i CLD_o3_v01.root -o CLD_o3_v01.gltf
+node bin/cli.js -i CLD_o4_v05.root -o CLD_o4_v05.gltf
+
+# ALLEGRO
+node bin/cli.js -i ALLEGRO_o1_v03.root -o ALLEGRO_o1_v03.gltf
+node bin/cli.js -i ALLEGRO_o2_v01.root -o ALLEGRO_o2_v01.gltf
+
+# IDEA
+node bin/cli.js -i IDEA_o1_v04.root -o IDEA_o1_v04.gltf
+node bin/cli.js -i IDEA_o2_v01.root -o IDEA_o2_v01.gltf
+
+# ILD FCCee
+node bin/cli.js -i ILD_FCCee_v02.root -o ILD_FCCee_v02.gltf
+
+# FCChh
+node bin/cli.js -i FCChh_DectMaster.root -o FCChh_DectMaster.gltf
+```
+
 ### API
 
 You can also call the converter in code. File I/O is your responsibility — pass an already-opened ROOT file and an optional config object:
