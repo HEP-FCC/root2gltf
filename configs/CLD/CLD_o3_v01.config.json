@@ -8,44 +8,20 @@
       "BeamPipeShield_assembly_3",
       "BeamPipeShield_noRot_assembly_4"
     ],
-    "Screen Solenoid": [
-      "CompSol_assembly_5",
-      "ScreenSol_assembly_6"
-    ],
+    "Screen Solenoid": ["CompSol_assembly_5", "ScreenSol_assembly_6"],
     "LumiCal": [
       "LumiCal_envelope_7",
       "LumiCalInstrumentation_envelope_8",
       "LumiCalCooling_envelope_9",
       "LumiCalBackShield_envelope_10"
     ],
-    "Vertex": [
-      "Vertex_11"
-    ],
-    "Inner Trackers": [
-      "InnerTrackers_12"
-    ],
-    "Outer Trackers": [
-      "OuterTrackers_13"
-    ],
-    "ARC": [
-      "ARCBARREL_vesselSkin_14",
-      "ArcEndcaps_15"
-    ],
-    "ECal": [
-      "ECalBarrel_envelope_16",
-      "ECalEndcap_envelope_17"
-    ],
-    "HCal": [
-      "HCalBarrel_envelope_18",
-      "HCalEndcaps_19"
-    ],
-    "Solenoid": [
-      "Solenoid_20"
-    ],
-    "Yoke": [
-      "YokeBarrel_envelope_21",
-      "YokeEndcap_envelope_22"
-    ]
-  },
-  "depth": 3
+    "Vertex": ["Vertex_11"],
+    "Inner Trackers": ["InnerTrackers_12"],
+    "Outer Trackers": ["OuterTrackers_13"],
+    "ARC": ["ARCBARREL_vesselSkin_14", "ArcEndcaps_15"],
+    "ECal": ["ECalBarrel_envelope_16", "ECalEndcap_envelope_17"],
+    "HCal": ["HCalBarrel_envelope_18", "HCalEndcaps_19"],
+    "Solenoid": ["Solenoid_20"],
+    "Yoke": ["YokeBarrel_envelope_21", "YokeEndcap_envelope_22"]
+  }
 }

@@ -7,10 +7,7 @@
       "BeamPipeShield_assembly_2",
       "BeamPipeShield_noRot_assembly_3"
     ],
-    "Screen Solenoid": [
-      "CompSol_assembly_4",
-      "ScreenSol_assembly_5"
-    ],
+    "Screen Solenoid": ["CompSol_assembly_4", "ScreenSol_assembly_5"],
     "LumiCal": [
       "LumiCal_envelope_6",
       "LumiCalInstrumentation_envelope_7",
@@ -21,18 +18,10 @@
       "HOMAbsorber_envelope_10",
       "HOMAbsorbers_PunchThrough_assembly_11"
     ],
-    "Vertex": [
-      "Vertex_12"
-    ],
-    "CDCH": [
-      "CDCH_13"
-    ],
-    "ECal": [
-      "ECalBarrel_vol_14"
-    ],
-    "HCal": [
-      "HCalEnvelopeVolume_15"
-    ],
+    "Vertex": ["Vertex_12"],
+    "CDCH": ["CDCH_13"],
+    "ECal": ["ECalBarrel_vol_14"],
+    "HCal": ["HCalEnvelopeVolume_15"],
     "Calo Encaps": [
       "CalEndcapCryoFront_positive_SimpleCylinder_16",
       "CalEndcapCryoBack_positive_SimpleCylinder_17",
@@ -49,17 +38,12 @@
       "CalEndcapBathBack_negative_SimpleCylinder_29",
       "CalEndcapBathOuter_negative_SimpleCylinder_30"
     ],
-    "EMEC": [
-      "EMEC_vol_23"
-    ],
-    "HCal Endcap": [
-      "HCalThreePartsEndcap_volume_31"
-    ],
+    "EMEC": ["EMEC_vol_23"],
+    "HCal Endcap": ["HCalThreePartsEndcap_volume_31"],
     "Muon Tagger": [
       "MuonTaggerBarrel_SimpleCylinder_32",
       "MuonTaggerEndcap_positive_SimpleCylinder_33",
       "MuonTaggerEndcap_negative_SimpleCylinder_34"
     ]
-  },
-  "depth": 3
+  }
 }

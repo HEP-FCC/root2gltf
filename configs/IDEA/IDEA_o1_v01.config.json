@@ -7,10 +7,7 @@
       "BeamPipeShield_assembly_2",
       "BeamPipeShield_noRot_assembly_3"
     ],
-    "Screen Solenoid": [
-      "CompSol_assembly_4",
-      "ScreenSol_assembly_5"
-    ],
+    "Screen Solenoid": ["CompSol_assembly_4", "ScreenSol_assembly_5"],
     "LumiCal": [
       "LumiCal_envelope_6",
       "LumiCalInstrumentation_envelope_7",
@@ -21,17 +18,8 @@
       "HOMAbsorber_envelope_10",
       "HOMAbsorbers_PunchThrough_assembly_11"
     ],
-    "Vertex": [
-      "Vertex_12"
-    ],
-    "CDCH": [
-      "CDCH_13"
-    ],
-    "Calorimeter": [
-      "CaloBarrel_14",
-      "CaloEndcap_15",
-      "CaloEndcap2_16"
-    ]
-  },
-  "depth": 3
+    "Vertex": ["Vertex_12"],
+    "CDCH": ["CDCH_13"],
+    "Calorimeter": ["CaloBarrel_14", "CaloEndcap_15", "CaloEndcap2_16"]
+  }
 }
