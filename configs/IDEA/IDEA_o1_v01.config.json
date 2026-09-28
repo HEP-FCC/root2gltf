@@ -1,0 +1,37 @@
+{
+  "hidden": [],
+  "subparts": {
+    "Beam Pipe": [
+      "BeBeampipe_assembly_0",
+      "BeamPipe_assembly_1",
+      "BeamPipeShield_assembly_2",
+      "BeamPipeShield_noRot_assembly_3"
+    ],
+    "Screen Solenoid": [
+      "CompSol_assembly_4",
+      "ScreenSol_assembly_5"
+    ],
+    "LumiCal": [
+      "LumiCal_envelope_6",
+      "LumiCalInstrumentation_envelope_7",
+      "LumiCalCooling_envelope_8",
+      "LumiCalBackShield_envelope_9"
+    ],
+    "HOM Absorber": [
+      "HOMAbsorber_envelope_10",
+      "HOMAbsorbers_PunchThrough_assembly_11"
+    ],
+    "Vertex": [
+      "Vertex_12"
+    ],
+    "CDCH": [
+      "CDCH_13"
+    ],
+    "Calorimeter": [
+      "CaloBarrel_14",
+      "CaloEndcap_15",
+      "CaloEndcap2_16"
+    ]
+  },
+  "depth": 3
+}
