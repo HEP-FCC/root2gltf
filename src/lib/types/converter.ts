@@ -1,12 +1,13 @@
 export interface TConfig {
   hiddenVolumes: string[];
   namedScenes: Record<string, string[]>;
+  assignColor: boolean;
 }
 
 export interface TParams {
   input: any;
   depth?: number;
-  config?: TConfig | null;
+  config?: TConfig;
 }
 
 export interface TTraversable {

@@ -1,8 +1,11 @@
 import type { TConfig } from "../types/converter.js";
 import type { TObjArray } from "../types/root.js";
 
-const generateConfig = (config: TConfig | null, childrenNodes: TObjArray) => {
-  if (config !== null) return config;
+const generateConfig = (
+  config: TConfig | undefined,
+  childrenNodes: TObjArray,
+): TConfig => {
+  if (config) return config;
 
   console.log(`INFO: Exporting the full geometry`);
 
@@ -11,6 +14,7 @@ const generateConfig = (config: TConfig | null, childrenNodes: TObjArray) => {
     namedScenes: Object.fromEntries(
       childrenNodes.arr.map((node) => [node.fName, [node.fName]]),
     ),
+    assignColor: true,
   };
 };
 

@@ -35,7 +35,7 @@ const OPTIONS = yargs(hideBin(process.argv))
 (async () => {
   try {
     const path = OPTIONS.out || `${parse(OPTIONS.in).name}.gltf`;
-    let config = null; // Optional config file content
+    let config; // Optional config file content, initally undefined
 
     console.log("INFO: Reading root file");
     const input = await openFile(resolve(OPTIONS.in));
@@ -48,8 +48,8 @@ const OPTIONS = yargs(hideBin(process.argv))
     console.log("INFO: Starting glTF conversion");
     const glTFOutput = await root2gltf({
       input,
-      depth: OPTIONS.depth,
-      config,
+      depth: OPTIONS.depth, // Accepts undefined
+      config, // Accepts undefined
     });
 
     console.log("INFO: Writing output file");
