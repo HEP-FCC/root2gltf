@@ -9,12 +9,19 @@ import { parse, resolve } from "node:path";
 import root2gltf from "../dist/src/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
-  .usage("Usage: $0 -i <input-file> [-c <config-file>] [-o <output-file>] [-h]")
+  .usage(
+    "Usage: $0 -i <input-file> [-d -tree-depth] [-c <config-file>] [-o <output-file>] [-h]",
+  )
   .option("i", {
     alias: "input-file",
     describe: "Input ROOT file path",
     type: "string",
     demandOption: true,
+  })
+  .option("d", {
+    alias: "tree-depth",
+    describe: "Tree depth",
+    type: "number",
   })
   .option("o", {
     alias: "output-file",
@@ -42,7 +49,11 @@ const OPTIONS = yargs(hideBin(process.argv))
     }
 
     console.log("INFO: Starting glTF conversion");
-    const glTFOutput = await root2gltf({ input, config });
+    const glTFOutput = await root2gltf({
+      input,
+      depth: OPTIONS.treeDepth,
+      config,
+    });
 
     console.log("INFO: Writing output file");
     await writeFile(path, JSON.stringify(glTFOutput), "utf8");

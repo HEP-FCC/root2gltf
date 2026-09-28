@@ -10,7 +10,6 @@ describe("generateConfig", () => {
         const config: TConfig = {
           hidden: ["A"],
           subparts: { Group: ["B"] },
-          depth: 5,
         };
         const result = generateConfig(config, makeChildren(["B"]));
 
@@ -25,7 +24,6 @@ describe("generateConfig", () => {
         const result = generateConfig(null, makeChildren(["A", "B", "C"]));
 
         expect(result.hidden).toEqual([]);
-        expect(result.depth).toBe(2);
         expect(result.subparts).toEqual({ A: ["A"], B: ["B"], C: ["C"] });
       });
 

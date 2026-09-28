@@ -106,7 +106,6 @@ describe("root2gltf", () => {
           config: {
             hidden: [],
             subparts: { "Group A": ["PartA", "PartB"] },
-            depth: 2,
           },
         });
         expect(jest.mocked(Scene).mock.calls).toHaveLength(1);
