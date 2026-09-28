@@ -106,6 +106,8 @@ describe("root2gltf", () => {
           config: {
             hiddenVolumes: [],
             namedScenes: { "Group A": ["PartA", "PartB"] },
+            missingColors: true,
+            reduceOpacity: true,
           },
         });
         expect(jest.mocked(Scene).mock.calls).toHaveLength(1);
