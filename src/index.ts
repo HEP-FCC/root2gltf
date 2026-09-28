@@ -54,24 +54,24 @@ const root2gltf = async ({
     const children = rootNode.fVolume.fNodes;
     if (!children) throw new Error("Parent node has no subparts");
 
-    const selectedConfig = generateConfig(config, children);
+    const currentConfig = generateConfig(config, children);
     const treeDepth = depth || DEFAULT_DEPTH;
     const exporter = new GLTFExporter();
-    const length = Object.keys(selectedConfig.namedScenes).length - 1;
+    const length = Object.keys(currentConfig.namedScenes).length - 1;
 
     let i = 0; // Current value to apply dynamic transparency
     let gltfGeo: TGLTFGeometry | null = null;
 
     // Filter out all nodes within hidden paths and beyond a maximum level
-    pruneTree(rootNode, new Set(selectedConfig.hiddenVolumes), treeDepth);
+    pruneTree(rootNode, new Set(currentConfig.hiddenVolumes), treeDepth);
 
     // Optionally assign a random color to volumes with an undefined, black or white value
-    if (selectedConfig.missingColors) assignColors(rootNode);
+    if (currentConfig.missingColors) assignColors(rootNode);
 
     // Set number of degrees per face for circles
     geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-    for (const [key, values] of Object.entries(selectedConfig.namedScenes)) {
+    for (const [key, values] of Object.entries(currentConfig.namedScenes)) {
       const rootScene = new Scene(); // Use one scene per config subpart
       const sceneOptions = {
         // vislevel: 4, // guardrail on the depth of the geometry hierarchy to traverse and render
@@ -95,7 +95,7 @@ const root2gltf = async ({
       rootScene.userData.visible = true;
 
       // Optionally increase transparency for outer volumes
-      if (selectedConfig.reduceOpacity)
+      if (currentConfig.reduceOpacity)
         rootScene.userData.opacity =
           ((length - i) * (MAX_OPACITY - MIN_OPACITY)) / length + MIN_OPACITY;
 
