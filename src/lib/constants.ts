@@ -1,5 +1,7 @@
 // Build constants
 export const DEFAULT_DEPTH = 3;
+export const MISSING_COLORS = true;
+export const REDUCE_OPACITY = true;
 
 // Visibility flags
 export const K_VIS_ON_SCREEN = 0x80;
