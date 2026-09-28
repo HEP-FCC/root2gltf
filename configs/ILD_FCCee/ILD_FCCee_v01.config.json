@@ -34,5 +34,7 @@
     "Yoke": ["YokeBarrel_envelope_23", "YokeEndcap_envelope_24"],
     "Coil": ["Coil_envelope_25"],
     "Services": ["SServices00assembly_26"]
-  }
+  },
+  "missingColors": false,
+  "reduceOpacity": false
 }
