@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable n/no-process-exit */
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
@@ -9,27 +8,25 @@ import { parse, resolve } from "node:path";
 import root2gltf from "../dist/src/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
-  .usage(
-    "Usage: $0 -i <input-file> [-d -tree-depth] [-c <config-file>] [-o <output-file>] [-h]",
-  )
+  .usage("Usage: $0 -i <in> [-d -depth] [-c -config] [-o -out] [-h]")
   .option("i", {
-    alias: "input-file",
+    alias: "in",
     describe: "Input ROOT file path",
     type: "string",
     demandOption: true,
   })
   .option("d", {
-    alias: "tree-depth",
+    alias: "depth",
     describe: "Tree depth",
     type: "number",
   })
   .option("o", {
-    alias: "output-file",
+    alias: "out",
     describe: "Output glTF file path",
     type: "string",
   })
   .option("c", {
-    alias: "config-file",
+    alias: "config",
     describe: "Detector configuration file path",
     type: "string",
   })
@@ -37,21 +34,21 @@ const OPTIONS = yargs(hideBin(process.argv))
 
 (async () => {
   try {
-    const path = OPTIONS.outputFile || `${parse(OPTIONS.inputFile).name}.gltf`;
+    const path = OPTIONS.out || `${parse(OPTIONS.in).name}.gltf`;
     let config = null; // Optional config file content
 
     console.log("INFO: Reading root file");
-    const input = await openFile(resolve(OPTIONS.inputFile));
+    const input = await openFile(resolve(OPTIONS.in));
 
-    if (OPTIONS.configFile) {
+    if (OPTIONS.config) {
       console.log("INFO: Reading config file");
-      config = JSON.parse(await readFile(OPTIONS.configFile, "utf8"));
+      config = JSON.parse(await readFile(OPTIONS.config, "utf8"));
     }
 
     console.log("INFO: Starting glTF conversion");
     const glTFOutput = await root2gltf({
       input,
-      depth: OPTIONS.treeDepth,
+      depth: OPTIONS.depth,
       config,
     });
 
@@ -59,9 +56,9 @@ const OPTIONS = yargs(hideBin(process.argv))
     await writeFile(path, JSON.stringify(glTFOutput), "utf8");
 
     console.log(`INFO: glTF content saved to '${path}'`);
-    process.exit(0);
+    process.exitCode = 0;
   } catch (error) {
     console.error(`ERROR: ${error.message}, reason below:\n  ${error.cause}`);
-    process.exit(1);
+    process.exitCode = 1;
   }
 })();
