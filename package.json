@@ -1,6 +1,6 @@
 {
   "name": "@hep-fcc/root2gltf",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Convert detector geometries from ROOT to the glTF format used by Phoenix",
   "keywords": [
     "ROOT",
@@ -17,6 +17,7 @@
     "url": "git+https://github.com/HEP-FCC/root2gltf.git"
   },
   "license": "BSD-2-Clause",
+  "author": "CERN EP-FCC Analysis and Visualization team",
   "type": "module",
   "exports": "./dist/src/index.js",
   "main": "dist/src/index.js",

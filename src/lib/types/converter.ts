@@ -1,11 +1,11 @@
 export interface TConfig {
-  hidden: string[];
-  subparts: Record<string, string[]>;
-  depth: number;
+  hiddenVolumes: string[];
+  namedScenes: Record<string, string[]>;
 }
 
 export interface TParams {
   input: any;
+  depth?: number;
   config?: TConfig | null;
 }
 

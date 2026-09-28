@@ -1,0 +1,49 @@
+{
+  "hiddenVolumes": [],
+  "namedScenes": {
+    "Beam Pipe": [
+      "BeBeampipe_assembly_0",
+      "BeamPipe_assembly_1",
+      "BeamPipeShield_assembly_2",
+      "BeamPipeShield_noRot_assembly_3"
+    ],
+    "Screen Solenoid": ["CompSol_assembly_4", "ScreenSol_assembly_5"],
+    "LumiCal": [
+      "LumiCal_envelope_6",
+      "LumiCalInstrumentation_envelope_7",
+      "LumiCalCooling_envelope_8",
+      "LumiCalBackShield_envelope_9"
+    ],
+    "HOM Absorber": [
+      "HOMAbsorber_envelope_10",
+      "HOMAbsorbers_PunchThrough_assembly_11"
+    ],
+    "Vertex": ["Vertex_12"],
+    "CDCH": ["lvCDCH_13"],
+    "ECal": ["ECalBarrel_vol_14"],
+    "HCal": ["HCalEnvelopeVolume_15"],
+    "Calo Encaps": [
+      "CalEndcapCryoFront_positive_SimpleCylinder_16",
+      "CalEndcapCryoBack_positive_SimpleCylinder_17",
+      "CalEndcapCryoOuter_positive_SimpleCylinder_18",
+      "CalEndcapCryoInner_positive_SimpleCylinder_19",
+      "CalEndcapBathFront_positive_SimpleCylinder_20",
+      "CalEndcapBathBack_positive_SimpleCylinder_21",
+      "CalEndcapBathOuter_positive_SimpleCylinder_22",
+      "CalEndcapCryoFront_negative_SimpleCylinder_24",
+      "CalEndcapCryoBack_negative_SimpleCylinder_25",
+      "CalEndcapCryoOuter_negative_SimpleCylinder_26",
+      "CalEndcapCryoInner_negative_SimpleCylinder_27",
+      "CalEndcapBathFront_negative_SimpleCylinder_28",
+      "CalEndcapBathBack_negative_SimpleCylinder_29",
+      "CalEndcapBathOuter_negative_SimpleCylinder_30"
+    ],
+    "EMEC": ["EMEC_vol_23"],
+    "HCal Endcap": ["HCalThreePartsEndcap_volume_31"],
+    "Muon Tagger": [
+      "MuonTaggerBarrel_SimpleCylinder_32",
+      "MuonTaggerEndcap_positive_SimpleCylinder_33",
+      "MuonTaggerEndcap_negative_SimpleCylinder_34"
+    ]
+  }
+}
