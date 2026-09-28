@@ -14,7 +14,7 @@ const generateConfig = (
     namedScenes: Object.fromEntries(
       childrenNodes.arr.map((node) => [node.fName, [node.fName]]),
     ),
-    assignColor: true,
+    missingColors: true,
   };
 };
 

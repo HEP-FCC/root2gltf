@@ -1,7 +1,7 @@
 export interface TConfig {
   hiddenVolumes: string[];
   namedScenes: Record<string, string[]>;
-  assignColor: boolean;
+  missingColors: boolean;
 }
 
 export interface TParams {
