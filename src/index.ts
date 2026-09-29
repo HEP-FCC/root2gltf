@@ -54,8 +54,11 @@ const root2gltf = async ({
     const children = rootNode.fVolume.fNodes;
     if (!children) throw new Error("Parent node has no subparts");
 
+    if (depth !== undefined && !(Number.isInteger(depth) && depth > 0))
+      throw new Error("Depth must be a positive integer");
+
+    const treeDepth = depth ?? DEFAULT_DEPTH;
     const currentConfig = generateConfig(config, children);
-    const treeDepth = depth || DEFAULT_DEPTH;
     const exporter = new GLTFExporter();
     const length = Object.keys(currentConfig.namedScenes).length - 1;
 

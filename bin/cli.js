@@ -48,8 +48,8 @@ const OPTIONS = yargs(hideBin(process.argv))
     console.log("INFO: Starting glTF conversion");
     const glTFOutput = await root2gltf({
       input,
-      depth: OPTIONS.depth, // Accepts undefined
-      config, // Accepts undefined
+      depth: OPTIONS.depth, // If undefined assigns default
+      config, // If undefined provides configs
     });
 
     console.log("INFO: Writing output file");
