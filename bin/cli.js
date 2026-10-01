@@ -37,28 +37,27 @@ const OPTIONS = yargs(hideBin(process.argv))
     const path = OPTIONS.out || `${parse(OPTIONS.in).name}.gltf`;
     let config; // Optional config file content, initially undefined
 
-    console.log("INFO: Reading root file");
+    console.log("ROOT2glTF: Opening ROOT file");
     const input = await openFile(resolve(OPTIONS.in));
 
     if (OPTIONS.config) {
-      console.log("INFO: Reading config file");
+      console.log("ROOT2glTF: Reading config file");
       config = JSON.parse(await readFile(OPTIONS.config, "utf8"));
     }
 
-    console.log("INFO: Starting glTF conversion");
     const glTFOutput = await root2gltf({
       input,
       depth: OPTIONS.depth, // If undefined assigns default
       config, // If undefined provides configs
     });
 
-    console.log("INFO: Writing output file");
+    console.log(`ROOT2glTF: Writing output file in ${path}`);
     await writeFile(path, JSON.stringify(glTFOutput), "utf8");
 
-    console.log(`INFO: glTF content saved to '${path}'`);
     process.exitCode = 0;
   } catch (error) {
-    console.error(`ERROR: ${error.message}, reason below:\n  ${error.cause}`);
+    console.error(`ROOT2glTF: ${error.message}\n${error.cause}`);
+
     process.exitCode = 1;
   }
 })();

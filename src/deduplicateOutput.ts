@@ -5,7 +5,6 @@ import type { TGLTFGeometry } from "./lib/types/gltf.js";
 export const deduplicateMaterials = (outputContent: TGLTFGeometry): void => {
   // jsroot creates a new material per volume, so identical ones end up repeated many times.
   const { materials } = outputContent;
-  const initial = materials.length;
   const seen = new Map<string, number>();
   const mapping: Record<number, number> = {};
   const deduplicated: any[] = [];
@@ -33,16 +32,11 @@ export const deduplicateMaterials = (outputContent: TGLTFGeometry): void => {
       primitive.material = mapping[primitive.material]!;
     }),
   );
-
-  console.log(
-    `INFO: - Materials deduplicated: ${initial} -> ${outputContent.materials.length}`,
-  );
 };
 
 export const deduplicateMeshes = (outputContent: TGLTFGeometry): void => {
   // jsroot creates a new shape per volume, so identical ones end up repeated many times.
   const { meshes } = outputContent;
-  const initial = meshes.length;
   const seen = new Map<string, number>();
   const mapping: Record<number, number> = {};
   const deduplicated: any[] = [];
@@ -68,10 +62,6 @@ export const deduplicateMeshes = (outputContent: TGLTFGeometry): void => {
   outputContent.nodes.forEach((node) => {
     if ("mesh" in node) node.mesh = mapping[node.mesh]!;
   });
-
-  console.log(
-    `INFO: - Meshes deduplicated: ${initial} -> ${outputContent.meshes.length}`,
-  );
 };
 
 // Counts the number of objects in a hierarchy
