@@ -8,7 +8,9 @@ import { parse, resolve } from "node:path";
 import root2gltf from "../dist/src/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
-  .usage("Usage: $0 -i <in> [-d -depth] [-c -config] [-o -out] [-h]")
+  .usage(
+    "Usage: $0 -i <in> [-d -depth] [-c -config] [-o -out] [-v -verbose] [-h]",
+  )
   .option("i", {
     alias: "in",
     describe: "Input ROOT file path",
@@ -30,6 +32,11 @@ const OPTIONS = yargs(hideBin(process.argv))
     describe: "Detector configuration file path",
     type: "string",
   })
+  .option("v", {
+    alias: "verbose",
+    describe: "Print detailed progress logs",
+    type: "boolean",
+  })
   .help("h").argv;
 
 (async () => {
@@ -49,6 +56,7 @@ const OPTIONS = yargs(hideBin(process.argv))
       input,
       depth: OPTIONS.depth, // If undefined assigns default
       config, // If undefined provides configs
+      verbose: OPTIONS.verbose,
     });
 
     console.log(`ROOT2glTF: Writing output file in ${path}`);

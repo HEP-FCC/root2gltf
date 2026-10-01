@@ -40,10 +40,9 @@ const root2gltf = async ({
   input,
   depth,
   config,
+  verbose = false,
 }: TParams): Promise<TGLTFGeometry> => {
   try {
-    const verbose = true;
-
     if (depth !== undefined && !(Number.isInteger(depth) && depth > 0))
       throw new Error("Depth must be a positive integer");
 
@@ -58,7 +57,7 @@ const root2gltf = async ({
     const children = rootNode.fVolume.fNodes;
     if (!children) throw new Error("Parent node has no subparts");
 
-    console.log("ROOT2glTF: starting glTF conversion...");
+    console.log("ROOT2glTF: starting glTF conversion");
 
     const treeDepth = depth ?? DEFAULT_DEPTH;
     const currentConfig = generateConfig(config, children);
@@ -113,7 +112,7 @@ const root2gltf = async ({
       i++;
     }
 
-    console.log("ROOT2glTF: Removing redundant data...");
+    console.log("ROOT2glTF: Removing redundant data");
     deduplicateMaterials(gltfGeo!);
     deduplicateMeshes(gltfGeo!);
 

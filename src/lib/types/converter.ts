@@ -9,6 +9,7 @@ export interface TParams {
   input: any;
   depth?: number;
   config?: TConfig;
+  verbose?: boolean;
 }
 
 export interface TTraversable {
