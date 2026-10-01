@@ -31,6 +31,7 @@ import {
   installPolyfills,
   normalizePivot,
 } from "./lib/utils/nodeWorkarounds.js";
+import assignColors from "./lib/utils/assignColors.js";
 
 // Polyfill FileReader for Node.js using the native Blob.arrayBuffer()
 installPolyfills();
@@ -38,7 +39,7 @@ installPolyfills();
 const root2gltf = async ({
   input,
   depth,
-  config = null,
+  config,
 }: TParams): Promise<TGLTFGeometry> => {
   try {
     // Read file detector geometry
@@ -50,27 +51,30 @@ const root2gltf = async ({
     if (!rootNode) throw new Error("Geometry has no parent node");
 
     // Read parent node subparts
-    const childrenNodes = rootNode.fVolume.fNodes;
-    if (!childrenNodes) throw new Error("Parent node has no subparts");
+    const children = rootNode.fVolume.fNodes;
+    if (!children) throw new Error("Parent node has no subparts");
 
-    const { hiddenVolumes, namedScenes } = generateConfig(
-      config,
-      childrenNodes,
-    );
-    const treeDepth = depth || DEFAULT_DEPTH;
+    if (depth !== undefined && !(Number.isInteger(depth) && depth > 0))
+      throw new Error("Depth must be a positive integer");
+
+    const treeDepth = depth ?? DEFAULT_DEPTH;
+    const currentConfig = generateConfig(config, children);
     const exporter = new GLTFExporter();
-    const length = Object.keys(namedScenes).length - 1;
+    const length = Object.keys(currentConfig.namedScenes).length - 1;
 
-    let i = 0; // Current value to map
+    let i = 0; // Current value to apply dynamic transparency
     let gltfGeo: TGLTFGeometry | null = null;
 
     // Filter out all nodes within hidden paths and beyond a maximum level
-    pruneTree(rootNode, new Set(hiddenVolumes), treeDepth);
+    pruneTree(rootNode, new Set(currentConfig.hiddenVolumes), treeDepth);
+
+    // Optionally assign a random color to volumes with an undefined, black or white value
+    if (currentConfig.missingColors) assignColors(rootNode);
 
     // Set number of degrees per face for circles
     geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
-    for (const [key, values] of Object.entries(namedScenes)) {
+    for (const [key, values] of Object.entries(currentConfig.namedScenes)) {
       const rootScene = new Scene(); // Use one scene per config subpart
       const sceneOptions = {
         // vislevel: 4, // guardrail on the depth of the geometry hierarchy to traverse and render
@@ -92,8 +96,12 @@ const root2gltf = async ({
       rootScene.name = key;
       rootScene.children.push(build(rootGeo, sceneOptions)); // Build from reassigned parameters
       rootScene.userData.visible = true;
-      rootScene.userData.opacity =
-        ((length - i) * (MAX_OPACITY - MIN_OPACITY)) / length + MIN_OPACITY; // Dynamic transparency
+
+      // Optionally increase transparency for outer volumes
+      if (currentConfig.reduceOpacity)
+        rootScene.userData.opacity =
+          ((length - i) * (MAX_OPACITY - MIN_OPACITY)) / length + MIN_OPACITY;
+
       normalizePivot(rootScene); // Normalize pivot to null before exporting for Three.js GLTFExporter
 
       console.log(

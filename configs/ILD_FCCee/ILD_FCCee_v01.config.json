@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Screen Solenoid": ["CompSol_assembly_0", "ScreenSol_assembly_1"],

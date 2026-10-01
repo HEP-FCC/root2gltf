@@ -1,5 +1,7 @@
 // Build constants
 export const DEFAULT_DEPTH = 3;
+export const MISSING_COLORS = true;
+export const REDUCE_OPACITY = true;
 
 // Visibility flags
 export const K_VIS_ON_SCREEN = 0x80;
@@ -36,8 +38,8 @@ export const GEO_GRAD_PER_SEGM = 360 / 30;
 // Color constants
 export const K_WHITE = 0; // ROOT white
 export const K_BLACK = 1; // ROOT black
-export const DEFAULT_LINE_COLOR = 1; // Line color of ROOT volumes without visualization attributes
-export const DEFAULT_FILL_COLOR = 19; // Fill color of ROOT volumes without visualization attributes
+export const K_LINE = 1; // Line color of ROOT volumes without visualization attributes
+export const K_FILL = 19; // Fill color of ROOT volumes without visualization attributes
 
 // Adustment constants
 export const THRESHOLD = 1e-4; // Minimum distance from the parent volume to be considered rudundant

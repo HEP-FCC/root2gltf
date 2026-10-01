@@ -8,27 +8,29 @@ describe("generateConfig", () => {
     describe("when generateConfig is called", () => {
       it("then returns it unchanged", () => {
         const config: TConfig = {
+          missingColors: true,
+          reduceOpacity: true,
           hiddenVolumes: ["A"],
           namedScenes: { Group: ["B"] },
         };
         const result = generateConfig(config, makeChildren(["B"]));
 
-        expect(result).toBe(config);
+        expect(result).toStrictEqual(config);
       });
     });
   });
 
-  describe("given config is null", () => {
+  describe("given config is undefined", () => {
     describe("when generateConfig is called with children", () => {
       it("then auto-generates config from children", () => {
-        const result = generateConfig(null, makeChildren(["A", "B", "C"]));
+        const result = generateConfig(undefined, makeChildren(["A", "B", "C"]));
 
         expect(result.hiddenVolumes).toEqual([]);
         expect(result.namedScenes).toEqual({ A: ["A"], B: ["B"], C: ["C"] });
       });
 
       it("then produces one subpart entry per child node", () => {
-        const result = generateConfig(null, makeChildren(["X", "Y"]));
+        const result = generateConfig(undefined, makeChildren(["X", "Y"]));
 
         expect(Object.keys(result.namedScenes)).toHaveLength(2);
       });

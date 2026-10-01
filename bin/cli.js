@@ -38,7 +38,7 @@ const OPTIONS = yargs(hideBin(process.argv))
 (async () => {
   try {
     const path = OPTIONS.outputFile || `${parse(OPTIONS.inputFile).name}.gltf`;
-    let config = null; // Optional config file content
+    let config; // Optional config file content, initially undefined
 
     console.log("INFO: Reading root file");
     const input = await openFile(resolve(OPTIONS.inputFile));

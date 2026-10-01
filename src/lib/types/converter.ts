@@ -1,4 +1,6 @@
 export interface TConfig {
+  missingColors: boolean;
+  reduceOpacity: boolean;
   hiddenVolumes: string[];
   namedScenes: Record<string, string[]>;
 }
@@ -6,7 +8,7 @@ export interface TConfig {
 export interface TParams {
   input: any;
   depth?: number;
-  config?: TConfig | null;
+  config?: TConfig;
 }
 
 export interface TTraversable {

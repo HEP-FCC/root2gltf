@@ -104,6 +104,8 @@ describe("root2gltf", () => {
         await root2gltf({
           input: makeInput(rootGeo),
           config: {
+            missingColors: true,
+            reduceOpacity: true,
             hiddenVolumes: [],
             namedScenes: { "Group A": ["PartA", "PartB"] },
           },
