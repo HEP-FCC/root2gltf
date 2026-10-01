@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Screen Solenoid": ["CompSol_assembly_0", "ScreenSol_assembly_1"],
@@ -34,7 +36,5 @@
     "Yoke": ["YokeBarrel_envelope_23", "YokeEndcap_envelope_24"],
     "Coil": ["Coil_envelope_25"],
     "Services": ["SServices00assembly_26"]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }

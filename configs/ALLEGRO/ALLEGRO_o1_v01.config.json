@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
@@ -45,7 +47,5 @@
       "MuonTaggerEndcap_positive_SimpleCylinder_33",
       "MuonTaggerEndcap_negative_SimpleCylinder_34"
     ]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }

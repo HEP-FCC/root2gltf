@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
@@ -23,7 +25,5 @@
     "HCal": ["HCalBarrel_envelope_18", "HCalEndcaps_19"],
     "Solenoid": ["Solenoid_20"],
     "Yoke": ["YokeBarrel_envelope_21", "YokeEndcap_envelope_22"]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }

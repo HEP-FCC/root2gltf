@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
@@ -22,7 +24,5 @@
       "EndPlateAbsorber_positive_SimpleCylinder_14",
       "EndPlateAbsorber_negative_SimpleCylinder_15"
     ]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }

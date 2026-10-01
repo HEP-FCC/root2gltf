@@ -8,10 +8,10 @@ describe("generateConfig", () => {
     describe("when generateConfig is called", () => {
       it("then returns it unchanged", () => {
         const config: TConfig = {
-          hiddenVolumes: ["A"],
-          namedScenes: { Group: ["B"] },
           missingColors: true,
           reduceOpacity: true,
+          hiddenVolumes: ["A"],
+          namedScenes: { Group: ["B"] },
         };
         const result = generateConfig(config, makeChildren(["B"]));
 

@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
@@ -21,7 +23,5 @@
     "Vertex": ["Vertex_12"],
     "CDCH": ["CDCH_13"],
     "Calorimeter": ["CaloBarrel_14", "CaloEndcap_15", "CaloEndcap2_16"]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }

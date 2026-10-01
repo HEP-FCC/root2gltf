@@ -1,4 +1,6 @@
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
@@ -23,7 +25,5 @@
     "ECal Endcap": ["ECalEndcaps_turbine_17"],
     "HCal Endcap": ["HCalThreePartsEndcap_volume_18"],
     "Endcap": ["Barrel_assembly_19", "Endcaps_assembly_20"]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }

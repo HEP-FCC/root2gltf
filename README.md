@@ -81,10 +81,10 @@ const gltfContent = await root2gltf({
   input,
   depth: 3,
   config: {
-    hiddenVolumes: ["BeamPipeShield_assembly_0"],
-    namedScenes: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
     missingColors: true,
     reduceOpacity: true,
+    hiddenVolumes: ["BeamPipeShield_assembly_0"],
+    namedScenes: { "Beam Pipe": ["BeBeampipe_assembly_0"] },
   },
 });
 
@@ -97,10 +97,10 @@ Config file/object is optional, you do not need to fill all the fields for the c
 
 | Field           | Default               | Description                                                                         |
 | --------------- | --------------------- | ----------------------------------------------------------------------------------- |
-| `hiddenVolumes` | `[]` (Nothing hidden) | Exclude specific volumes from the output                                            |
-| `namedScenes`   | One scene per volume  | Combine multiple volumes into a view                                                |
 | `missingColors` | `true`                | Optionally assign a random color to volumes with an undefined, black or white value |
 | `reduceOpacity` | `true`                | Apply decreasing opacity across scenes so nested volumes are visible                |
+| `hiddenVolumes` | `[]` (Nothing hidden) | Exclude specific volumes from the output                                            |
+| `namedScenes`   | One scene per volume  | Combine multiple volumes into a view                                                |
 
 Ready-to-use configs for several FCC-ee detector concepts are in [configs/](configs/).
 
@@ -108,6 +108,8 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
 
 ```json
 {
+  "missingColors": false,
+  "reduceOpacity": false,
   "hiddenVolumes": [],
   "namedScenes": {
     "Beam Pipe": [
@@ -132,9 +134,7 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
     "ECal Endcap": ["ECalEndcaps_turbine_17"],
     "HCal Endcap": ["HCalThreePartsEndcap_volume_18"],
     "Endcap": ["Barrel_assembly_19", "Endcaps_assembly_20"]
-  },
-  "missingColors": false,
-  "reduceOpacity": false
+  }
 }
 ```
 

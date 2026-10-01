@@ -104,10 +104,10 @@ describe("root2gltf", () => {
         await root2gltf({
           input: makeInput(rootGeo),
           config: {
-            hiddenVolumes: [],
-            namedScenes: { "Group A": ["PartA", "PartB"] },
             missingColors: true,
             reduceOpacity: true,
+            hiddenVolumes: [],
+            namedScenes: { "Group A": ["PartA", "PartB"] },
           },
         });
         expect(jest.mocked(Scene).mock.calls).toHaveLength(1);
