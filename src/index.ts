@@ -46,7 +46,9 @@ const root2gltf = async ({
     if (depth !== undefined && !(Number.isInteger(depth) && depth > 0))
       throw new Error("Depth must be a positive integer");
 
-    console.log("ROOT2glTF: Reading detector geometry (might take a while)...");
+    console.log(
+      "ROOT2glTF | INFO: Reading detector geometry (might take a while)...",
+    );
 
     const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
     if (!rootGeo) throw new Error("Failed to read detector geometry");
@@ -57,7 +59,7 @@ const root2gltf = async ({
     const children = rootNode.fVolume.fNodes;
     if (!children) throw new Error("Parent node has no subparts");
 
-    console.log("ROOT2glTF: starting glTF conversion");
+    console.log("ROOT2glTF | INFO: starting glTF conversion");
 
     const treeDepth = depth ?? DEFAULT_DEPTH;
     const currentConfig = generateConfig(config, children);
@@ -96,7 +98,9 @@ const root2gltf = async ({
 
       if (verbose) {
         const childrenNumber = countGLTFObjects(rootScene.children.at(-1));
-        console.log(`ROOT2glTF: Parent ${key} has ${childrenNumber} nodes`);
+        console.log(
+          `ROOT2glTF | INFO: Parent ${key} has ${childrenNumber} nodes`,
+        );
       }
 
       normalizePivot(rootScene); // ROOTJS workaround
@@ -112,7 +116,7 @@ const root2gltf = async ({
       i++;
     }
 
-    console.log("ROOT2glTF: Removing redundant data");
+    console.log("ROOT2glTF | INFO: Removing redundant data");
     deduplicateMaterials(gltfGeo!);
     deduplicateMeshes(gltfGeo!);
 

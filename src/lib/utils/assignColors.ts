@@ -27,7 +27,7 @@ const assignColors = (node: TGeoNodeMatrix, verbose: boolean): void => {
 
           if (verbose)
             console.log(
-              `ROOT2glTF: Volume ${volume.fName} mapped to rgb(${r}, ${g}, ${b})`,
+              `ROOT2glTF | INFO: Volume ${volume.fName} mapped to rgb(${r}, ${g}, ${b})`,
             );
 
           mappedColors.set(volume.fName, addColor(`rgb(${r}, ${g}, ${b})`));
