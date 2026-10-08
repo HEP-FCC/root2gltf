@@ -3,7 +3,7 @@ import { addColor } from "jsroot/colors";
 import { K_BLACK, K_FILL, K_LINE, K_WHITE } from "../constants.js";
 import type { TGeoNodeMatrix, TGeoVolume } from "../types/root.js";
 
-const assignColors = (node: TGeoNodeMatrix): void => {
+const assignColors = (node: TGeoNodeMatrix, verbose: boolean): void => {
   const generateValue = (): number => Math.floor(Math.random() * 256);
   const stack: TGeoNodeMatrix[] = [node];
   const seen = new Set<TGeoVolume>();
@@ -22,13 +22,16 @@ const assignColors = (node: TGeoNodeMatrix): void => {
           (volume.fFillColor === K_WHITE || volume.fFillColor === K_BLACK))
       ) {
         // And name has no color mapped
-        if (!mappedColors.has(volume.fName))
-          mappedColors.set(
-            volume.fName,
-            addColor(
-              `rgb(${generateValue()}, ${generateValue()}, ${generateValue()})`,
-            ),
-          );
+        if (!mappedColors.has(volume.fName)) {
+          const [r, g, b] = [generateValue(), generateValue(), generateValue()];
+
+          if (verbose)
+            console.log(
+              `ROOT2glTF | INFO: Volume ${volume.fName} mapped to rgb(${r}, ${g}, ${b})`,
+            );
+
+          mappedColors.set(volume.fName, addColor(`rgb(${r}, ${g}, ${b})`));
+        }
 
         // Assign generated color to volume with that name
         volume.fLineColor = mappedColors.get(volume.fName)!;

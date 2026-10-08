@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable n/no-process-exit */
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
@@ -10,58 +9,63 @@ import root2gltf from "../dist/src/index.js";
 
 const OPTIONS = yargs(hideBin(process.argv))
   .usage(
-    "Usage: $0 -i <input-file> [-d -tree-depth] [-c <config-file>] [-o <output-file>] [-h]",
+    "Usage: $0 -i <in> [-d -depth] [-c -config] [-o -out] [-v -verbose] [-h]",
   )
   .option("i", {
-    alias: "input-file",
+    alias: "in",
     describe: "Input ROOT file path",
     type: "string",
     demandOption: true,
   })
   .option("d", {
-    alias: "tree-depth",
+    alias: "depth",
     describe: "Tree depth",
     type: "number",
   })
   .option("o", {
-    alias: "output-file",
+    alias: "out",
     describe: "Output glTF file path",
     type: "string",
   })
   .option("c", {
-    alias: "config-file",
+    alias: "config",
     describe: "Detector configuration file path",
     type: "string",
+  })
+  .option("v", {
+    alias: "verbose",
+    describe: "Print detailed progress logs",
+    type: "boolean",
   })
   .help("h").argv;
 
 (async () => {
   try {
-    const path = OPTIONS.outputFile || `${parse(OPTIONS.inputFile).name}.gltf`;
+    const path = OPTIONS.out || `${parse(OPTIONS.in).name}.gltf`;
     let config; // Optional config file content, initially undefined
 
-    console.log("INFO: Reading root file");
-    const input = await openFile(resolve(OPTIONS.inputFile));
+    console.log("ROOT2glTF | INFO: Opening ROOT file");
+    const input = await openFile(resolve(OPTIONS.in));
 
-    if (OPTIONS.configFile) {
-      console.log("INFO: Reading config file");
-      config = JSON.parse(await readFile(OPTIONS.configFile, "utf8"));
+    if (OPTIONS.config) {
+      console.log("ROOT2glTF | INFO: Reading config file");
+      config = JSON.parse(await readFile(OPTIONS.config, "utf8"));
     }
 
-    console.log("INFO: Starting glTF conversion");
     const glTFOutput = await root2gltf({
       input,
-      depth: OPTIONS.treeDepth,
-      config,
+      depth: OPTIONS.depth, // If undefined assigns default
+      config, // If undefined provides configs
+      verbose: OPTIONS.verbose,
     });
 
-    console.log("INFO: Writing output file");
+    console.log(`ROOT2glTF | INFO: Writing output file in ${path}`);
     await writeFile(path, JSON.stringify(glTFOutput), "utf8");
 
-    console.log(`INFO: glTF content saved to '${path}'`);
-    process.exit(0);
+    process.exitCode = 0;
   } catch (error) {
-    console.error(`ERROR: ${error.message}, reason below:\n  ${error.cause}`);
-    process.exit(1);
+    console.error(`ROOT2glTF | ERROR: ${error.message}\n${error.cause}`);
+
+    process.exitCode = 1;
   }
 })();

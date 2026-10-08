@@ -17,7 +17,7 @@ import {
   GEO_GRAD_PER_SEGM,
   MAX_OPACITY,
   MIN_OPACITY,
-  NUM_FACES,
+  SCENE_OPTIONS,
 } from "./lib/constants.js";
 
 // Types
@@ -40,27 +40,31 @@ const root2gltf = async ({
   input,
   depth,
   config,
+  verbose = false,
 }: TParams): Promise<TGLTFGeometry> => {
   try {
-    // Read file detector geometry
+    if (depth !== undefined && !(Number.isInteger(depth) && depth > 0))
+      throw new Error("Depth must be a positive integer");
+
+    console.log(
+      "ROOT2glTF | INFO: Reading detector geometry (might take a while)...",
+    );
+
     const rootGeo: TGeoManager = await input.readObject(input.fKeys[0].fName);
     if (!rootGeo) throw new Error("Failed to read detector geometry");
 
-    // Read geometry parent node, root volume is shared by all the scenes
-    const rootNode = rootGeo.fNodes.arr[0];
+    const rootNode = rootGeo.fNodes.arr[0]; // Root volume is shared by all the scenes
     if (!rootNode) throw new Error("Geometry has no parent node");
 
-    // Read parent node subparts
     const children = rootNode.fVolume.fNodes;
     if (!children) throw new Error("Parent node has no subparts");
 
-    if (depth !== undefined && !(Number.isInteger(depth) && depth > 0))
-      throw new Error("Depth must be a positive integer");
+    console.log("ROOT2glTF | INFO: starting glTF conversion");
 
     const treeDepth = depth ?? DEFAULT_DEPTH;
     const currentConfig = generateConfig(config, children);
     const exporter = new GLTFExporter();
-    const length = Object.keys(currentConfig.namedScenes).length - 1;
+    const totalScenes = Object.keys(currentConfig.namedScenes).length - 1;
 
     let i = 0; // Current value to apply dynamic transparency
     let gltfGeo: TGLTFGeometry | null = null;
@@ -69,26 +73,14 @@ const root2gltf = async ({
     pruneTree(rootNode, new Set(currentConfig.hiddenVolumes), treeDepth);
 
     // Optionally assign a random color to volumes with an undefined, black or white value
-    if (currentConfig.missingColors) assignColors(rootNode);
+    if (currentConfig.missingColors) assignColors(rootNode, verbose);
 
     // Set number of degrees per face for circles
     geoCfg("GradPerSegm", GEO_GRAD_PER_SEGM);
 
     for (const [key, values] of Object.entries(currentConfig.namedScenes)) {
       const rootScene = new Scene(); // Use one scene per config subpart
-      const sceneOptions = {
-        // vislevel: 4, // guardrail on the depth of the geometry hierarchy to traverse and render
-        // numnodes: 1000, // guardrail on the total number of visible nodes across the whole scene
-        numfaces: NUM_FACES, // (default 10000) guardrail on the total number of triangle faces across the whole scene
-        // dflt_colors: false, // avoids overriding predefined colors
-        // no_screen: false, // ignores kVisOnScreen visibility bits when set
-        // composite: false, // unfolds composite shapes into separate parts
-        // showtop: false, // renders the top/master volume (TGeoManager only)
-        // instancing: -1, // -1 disables InstancedMesh, 1 forces it, 0 lets jsroot decide
-        // frustum: null, // camera frustum used for LOD culling (irrelevant when rendering headless)
-        // material_kind: "lambert", // three.js material used for generated meshes
-        // set_names: true, // attaches volume names to generated meshes
-      };
+      const sceneOptions = SCENE_OPTIONS;
 
       hideTree(rootNode); // Reset the volume by hiding all subparts shown in the previous iteration
       findTrees(rootNode, new Set(values)); // Find and show all subparts corresponding to the current iteration
@@ -97,18 +89,23 @@ const root2gltf = async ({
       rootScene.children.push(build(rootGeo, sceneOptions)); // Build from reassigned parameters
       rootScene.userData.visible = true;
 
-      // Optionally increase transparency for outer volumes
-      if (currentConfig.reduceOpacity)
+      // Optionally assign increasing transparency
+      if (currentConfig.reduceOpacity) {
         rootScene.userData.opacity =
-          ((length - i) * (MAX_OPACITY - MIN_OPACITY)) / length + MIN_OPACITY;
+          ((totalScenes - i) * (MAX_OPACITY - MIN_OPACITY)) / totalScenes +
+          MIN_OPACITY;
+      }
 
-      normalizePivot(rootScene); // Normalize pivot to null before exporting for Three.js GLTFExporter
+      if (verbose) {
+        const childrenNumber = countGLTFObjects(rootScene.children.at(-1));
+        console.log(
+          `ROOT2glTF | INFO: Parent ${key} has ${childrenNumber} nodes`,
+        );
+      }
 
-      console.log(
-        `INFO: ${key} has ${countGLTFObjects(rootScene.children[rootScene.children.length - 1])} objects`,
-      );
+      normalizePivot(rootScene); // ROOTJS workaround
 
-      // Build one scene at a time so each graph is freed instead of accumulating in memory.
+      // Build one scene at a time so each graph is freed instead of accumulating in memory
       const gltfScene = (await new Promise<unknown>((resolve, reject) => {
         exporter.parse(rootScene, resolve, reject);
       })) as TGLTFGeometry;
@@ -119,7 +116,7 @@ const root2gltf = async ({
       i++;
     }
 
-    // Reduce the output file size by removing redundant data that jsroot generates
+    console.log("ROOT2glTF | INFO: Removing redundant data");
     deduplicateMaterials(gltfGeo!);
     deduplicateMeshes(gltfGeo!);
 

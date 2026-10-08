@@ -25,15 +25,16 @@ npm run build
 ### CLI
 
 ```bash
-node bin/cli.js -i <input.root> [-d] [-c <config.json>] [-o <output.gltf>]
+node bin/cli.js -i <input.root> [-d] [-c <config.json>] [-o <output.gltf>] [-v]
 ```
 
-| Flag             | Description                                                              |
-| ---------------- | ------------------------------------------------------------------------ |
-| `-i`, `--input`  | Required path to the input ROOT file                                     |
-| `-d`, `--depth`  | How many levels deep to traverse the geometry tree (defaults to 3)       |
-| `-c`, `--config` | Optional path to a detector config file                                  |
-| `-o`, `--output` | Optional path for the output glTF file (defaults to `<input-name>.gltf`) |
+| Flag              | Description                                                              |
+| ----------------- | ------------------------------------------------------------------------ |
+| `-i`, `--input`   | Required path to the input ROOT file                                     |
+| `-d`, `--depth`   | How many levels deep to traverse the geometry tree (defaults to 3)       |
+| `-c`, `--config`  | Optional path to a detector config file                                  |
+| `-o`, `--output`  | Optional path for the output glTF file (defaults to `<input-name>.gltf`) |
+| `-v`, `--verbose` | Print detailed progress logs                                             |
 
 Example with custom depth:
 
