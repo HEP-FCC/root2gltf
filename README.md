@@ -2,18 +2,13 @@
 
 [![Node.js Package](https://github.com/HEP-FCC/root2gltf/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/HEP-FCC/root2gltf/actions/workflows/npm-publish.yml) 
 
-ROOT2glTF is a Node.js package that converts detector geometries from ROOT to the glTF format used by [Phoenix](https://github.com/HSF/phoenix). It is based on the browser-based converter [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter) from HSF. 
+ROOT2glTF is a Node.js package that converts detector geometries from ROOT to the glTF format used by [Phoenix](https://github.com/HSF/phoenix). It is based on the browser-based converter [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter) from HSF. This package is written in TypeScript, and implements CI/CD automations, with code linting and unit testing. To use the package, install it from npm, and either use the API or the CLI entry point (check the usage section)
 
-
-It reads a ROOT geometry file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix.
-
-An optional config file can be used to hide specific parts, group volumes into named views, or control traversal depth.
-
-
-- Deload Node.js call stack by turning recursive functions into iterative (which uses the heap)
-- Export one scene at a time so each structure is freed instead of accumulating in memory
-- Implement hash maps and sets for constant lookup 
-- Refactor the deduplication functions for O(n) efficiency instead of O(n^2)
+It introduces performance improvements such as:
+- Deloading Node.js call stack by turning recursive functions into iterative (which uses the heap)
+- Exporting one scene at a time so each structure is freed instead of accumulating in memory
+- Implementing hash maps and sets for constant lookup
+- Refactoring the deduplication functions for O(n) efficiency instead of O(n^2)
 
 ## Usage
 
