@@ -1,12 +1,19 @@
 # ROOT2glTF
 
-[![Node.js Package](https://github.com/HEP-FCC/root2gltf/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/HEP-FCC/root2gltf/actions/workflows/npm-publish.yml)
+[![Node.js Package](https://github.com/HEP-FCC/root2gltf/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/HEP-FCC/root2gltf/actions/workflows/npm-publish.yml) 
 
-Converts detector geometries from ROOT to the glTF format used by [Phoenix](https://github.com/HSF/phoenix).
+ROOT2glTF is a Node.js package that converts detector geometries from ROOT to the glTF format used by [Phoenix](https://github.com/HSF/phoenix). It is based on the browser-based converter [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter) from HSF. 
 
-It reads a ROOT geometry file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix. An optional config file can be used to hide specific parts, group volumes into named views, or control traversal depth.
 
-This project is based on [root_cern-To_gltf-Exporter](https://github.com/HSF/root_cern-To_gltf-Exporter), a browser-based ROOT to glTF converter.
+It reads a ROOT geometry file, deduplicates redundant mesh and material data, and writes out a single `.gltf` file ready to load in Phoenix.
+
+An optional config file can be used to hide specific parts, group volumes into named views, or control traversal depth.
+
+
+- Deload Node.js call stack by turning recursive functions into iterative (which uses the heap)
+- Export one scene at a time so each structure is freed instead of accumulating in memory
+- Implement hash maps and sets for constant lookup 
+- Refactor the deduplication functions for O(n) efficiency instead of O(n^2)
 
 ## Usage
 
@@ -22,10 +29,10 @@ npm install @hep-fcc/root2gltf
 npm run build
 ```
 
-### CLI
+### CLI Entry Point
 
 ```bash
-node bin/cli.js -i <input.root> [-d] [-c <config.json>] [-o <output.gltf>] [-v]
+npx root2gltf -i <input.root> [-d] [-c <config.json>] [-o <output.gltf>] [-v]
 ```
 
 | Flag              | Description                                                              |
@@ -39,30 +46,30 @@ node bin/cli.js -i <input.root> [-d] [-c <config.json>] [-o <output.gltf>] [-v]
 Example with custom depth:
 
 ```bash
-node bin/cli.js -i CLD_o4_v05.root -d 4 -o CLD_o4_v05.gltf
+npx root2gltf -i CLD_o4_v05.root -d 4 -o CLD_o4_v05.gltf
 ```
 
 Example without custom depth
 
 ```bash
 # CLD
-node bin/cli.js -i CLD_o2_v08.root -o CLD_o2_v08.gltf
-node bin/cli.js -i CLD_o3_v01.root -o CLD_o3_v01.gltf
-node bin/cli.js -i CLD_o4_v05.root -o CLD_o4_v05.gltf
+npx root2gltf -i CLD_o2_v08.root -o CLD_o2_v08.gltf
+npx root2gltf -i CLD_o3_v01.root -o CLD_o3_v01.gltf
+npx root2gltf -i CLD_o4_v05.root -o CLD_o4_v05.gltf
 
 # ALLEGRO
-node bin/cli.js -i ALLEGRO_o1_v03.root -o ALLEGRO_o1_v03.gltf
-node bin/cli.js -i ALLEGRO_o2_v01.root -o ALLEGRO_o2_v01.gltf
+npx root2gltf -i ALLEGRO_o1_v03.root -o ALLEGRO_o1_v03.gltf
+npx root2gltf -i ALLEGRO_o2_v01.root -o ALLEGRO_o2_v01.gltf
 
 # IDEA
-node bin/cli.js -i IDEA_o1_v04.root -o IDEA_o1_v04.gltf
-node bin/cli.js -i IDEA_o2_v01.root -o IDEA_o2_v01.gltf
+npx root2gltf -i IDEA_o1_v04.root -o IDEA_o1_v04.gltf
+npx root2gltf -i IDEA_o2_v01.root -o IDEA_o2_v01.gltf
 
 # ILD FCCee
-node bin/cli.js -i ILD_FCCee_v02.root -o ILD_FCCee_v02.gltf
+npx root2gltf -i ILD_FCCee_v02.root -o ILD_FCCee_v02.gltf
 
 # FCChh
-node bin/cli.js -i FCChh_DectMaster.root -o FCChh_DectMaster.gltf
+npx root2gltf -i FCChh_DectMaster.root -o FCChh_DectMaster.gltf
 ```
 
 ### API
@@ -139,9 +146,3 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
 }
 ```
 
-## Performance improvements
-
-- Deload Node.js call stack by turning recursive functions into iterative (which uses the heap)
-- Export one scene at a time so each structure is freed instead of accumulating in memory
-- Implement hash maps and sets for constant lookup 
-- Refactor the deduplication functions for O(n) efficiency instead of O(n^2)
