@@ -13,7 +13,7 @@ This project is based on [root_cern-To_gltf-Exporter](https://github.com/HSF/roo
 ### Install
 
 ```bash
-npm install
+npm install @hep-fcc/root2gltf
 ```
 
 ### Build
@@ -141,8 +141,7 @@ Ready-to-use configs for several FCC-ee detector concepts are in [configs/](conf
 
 ## Performance improvements
 
-Memory
-
-- Export one scene at a time so each graph is freed instead of accumulating in memory
-- Keep a reference to the first occurrence of each object instead of JSON-parsing during deduplication
 - Deload Node.js call stack by turning recursive functions into iterative (which uses the heap)
+- Export one scene at a time so each structure is freed instead of accumulating in memory
+- Implement hash maps and sets for constant lookup 
+- Refactor the deduplication functions for O(n) efficiency instead of O(n^2)
