@@ -11,7 +11,7 @@ export const SCENE_OPTIONS = {
   // vislevel: 4, // guardrail on the depth of the geometry hierarchy to traverse and render
   // numnodes: 1000, // guardrail on the total number of visible nodes across the whole scene
   numfaces: 1000, // (default 10000) guardrail on the total number of triangle faces across the whole scene
-  // dflt_colors: false, // avoids overriding predefined colors
+  // dflt_colors: false, // avoids overriding predefined colors (true assigns blue color)
   // no_screen: false, // ignores kVisOnScreen visibility bits when set
   // composite: false, // unfolds composite shapes into separate parts
   // showtop: false, // renders the top/master volume (TGeoManager only)
