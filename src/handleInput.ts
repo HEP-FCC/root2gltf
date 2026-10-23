@@ -1,10 +1,10 @@
 import { K_VIS_DAUGHTER, K_VIS_ON_SCREEN } from "./lib/constants.js";
 import type { TGeoNodeMatrix, TGeoVolume } from "./lib/types/root.js";
 import {
-  areDimensionsEqual,
-  arePositionsEqual,
+  // areDimensionsEqual,
+  // arePositionsEqual,
   reshapeSphere,
-  shrinkShape,
+  // shrinkShape,
 } from "./lib/utils/optimizeGraphics.js";
 
 // Filter out all volume subparts within the hidden paths and beyond a maximum level
@@ -58,13 +58,13 @@ const showTree = (node: TGeoNodeMatrix): void => {
     current.fVolume.fGeoAtt |= K_VIS_ON_SCREEN;
 
     // Shrink shape if volume overlaps with the parewnt
-    if (
-      parent !== null &&
-      arePositionsEqual(current.fMatrix) &&
-      areDimensionsEqual(parent.fShape, current.fVolume.fShape) &&
-      current.fVolume.fShape
-    )
-      shrinkShape(current.fVolume.fShape);
+    // if (
+    //   parent !== null &&
+    //   arePositionsEqual(current.fMatrix) &&
+    //   areDimensionsEqual(parent.fShape, current.fVolume.fShape) &&
+    //   current.fVolume.fShape
+    // )
+    //   shrinkShape(current.fVolume.fShape);
 
     // Reshape sphere if
     reshapeSphere(current.fVolume.fShape);
