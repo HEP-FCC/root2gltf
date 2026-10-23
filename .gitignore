@@ -31,5 +31,5 @@ yarn-error.log*
 .env*
 
 # root and gltf files
-*root
-*gltf
+ROOT/*
+glTF/*
