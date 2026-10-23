@@ -18,8 +18,6 @@ export const SCENE_OPTIONS = {
   // instancing: -1, // -1 disables InstancedMesh, 1 forces it, 0 lets jsroot decide
   // frustum: null, // camera frustum used for LOD culling (irrelevant when rendering headless)
   material_kind: "standard", // (default "lambert") three.js material used for generated meshes (GLTFExporter only accepts standard or basic)
-  metalness: 0, // same exported metallicFactor and roughnessFactor as the default lambert material
-  roughness: 1,
   // set_names: true, // attaches volume names to generated meshes
 };
 export const SHRINK_FACTOR = 0.999; // Scale applied to every dimension field of a shape.
